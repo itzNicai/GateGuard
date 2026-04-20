@@ -32,7 +32,7 @@ const NOTIFICATION_LINKS: Record<string, string> = {
 
 const NOTIFICATION_AVATARS: Record<NotificationType, string> = {
   visitor_at_gate: '/illustrations/notif-at-gate.png',
-  visitor_approved: '/illustrations/notif-approved.png',
+  visitor_approved: '/illustrations/pfp.png',
   visitor_denied: '/illustrations/notif-denied.png',
   visitor_exited: '/illustrations/notif-exited.png',
   registration_approved: '/illustrations/notif-reg-approved.png',
@@ -191,7 +191,7 @@ export default function HomeownerDashboardPage() {
                   </p>
                 </div>
                 <Image
-                  src="/illustrations/waiting.png"
+                  src="/illustrations/logo1.png"
                   alt=""
                   width={130}
                   height={130}

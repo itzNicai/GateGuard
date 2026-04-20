@@ -17,19 +17,19 @@ import { Search, Clock, Eye, QrCode, LogIn, LogOut, MapPin, User, Car, Shield, S
 import { toast } from 'sonner'
 
 const STATUS_AVATARS: Record<string, string> = {
-  registered: '/illustrations/notif-at-gate.png',
-  pending: '/illustrations/notif-at-gate.png',
-  approved: '/illustrations/notif-approved.png',
-  denied: '/illustrations/notif-denied.png',
+  registered: '/illustrations/pfp.png',
+  pending: '/illustrations/pfp.png',
+  approved: '/illustrations/pfp.png',
+  denied: '/illustrations/pfp.png',
 }
 
 const STATUS_COLORS: Record<string, string> = {
-  registered: 'text-muted-foreground',
-  pending: 'text-secondary',
-  approved: 'text-accent',
-  denied: 'text-destructive',
-  inside: 'text-primary',
-  completed: 'text-muted-foreground',
+  registered: 'text-[#d4c5b0]',
+  pending: 'text-[#c9a962]',
+  approved: 'text-[#c9a962]',
+  denied: 'text-red-400',
+  inside: 'text-[#f5e6d3]',
+  completed: 'text-[#d4c5b0]',
 }
 
 interface LogEntry {
@@ -61,7 +61,7 @@ function getDisplayStatus(log: LogEntry): string {
 function StatusText({ status }: { status: string }) {
   const labels: Record<string, string> = { completed: 'Completed', inside: 'Inside', registered: 'Registered', pending: 'Pending', approved: 'Approved', denied: 'Denied' }
   return (
-    <span className={`text-[9px] font-medium ${STATUS_COLORS[status] ?? 'text-muted-foreground'}`}>
+    <span className={`text-xs font-medium ${STATUS_COLORS[status] ?? 'text-[#d4c5b0]'}`}>
       {labels[status] ?? status.charAt(0).toUpperCase() + status.slice(1)}
     </span>
   )
@@ -96,7 +96,6 @@ export default function LogsPage() {
   const [carouselIndex, setCarouselIndex] = useState(0)
   const [refreshKey, setRefreshKey] = useState(0)
 
-  // Selection & bulk delete
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set())
   const [showBulkDelete, setShowBulkDelete] = useState(false)
   const [bulkDeleteConfirmText, setBulkDeleteConfirmText] = useState('')
@@ -196,7 +195,6 @@ export default function LogsPage() {
     return true
   })
 
-  // Selection helpers
   const allFilteredChecked = filtered.length > 0 && filtered.every((l) => selectedIds.has(`${l.source}-${l.id}`))
   const selectedCount = [...selectedIds].length
 
@@ -243,134 +241,234 @@ export default function LogsPage() {
 
   if (loading) {
     return (
-      <div className="space-y-4">
-        <div className="grid grid-cols-4 gap-3"><Skeleton className="h-16 rounded-xl" /><Skeleton className="h-16 rounded-xl" /><Skeleton className="h-16 rounded-xl" /><Skeleton className="h-16 rounded-xl" /></div>
-        <Skeleton className="h-64 rounded-xl" />
+      <div className="min-h-screen bg-[#3d3229]">
+        <div className="max-w-7xl mx-auto px-6 py-6 space-y-4">
+          <div className="grid grid-cols-4 gap-3">
+            <Skeleton className="h-16 rounded-xl bg-[#4a3f35]/50" />
+            <Skeleton className="h-16 rounded-xl bg-[#4a3f35]/50" />
+            <Skeleton className="h-16 rounded-xl bg-[#4a3f35]/50" />
+            <Skeleton className="h-16 rounded-xl bg-[#4a3f35]/50" />
+          </div>
+          <Skeleton className="h-64 rounded-xl bg-[#4a3f35]/50" />
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="flex flex-col h-[calc(100vh-52px)] overflow-hidden -mb-8">
-      <div className="shrink-0 space-y-3 pb-3">
-        {/* Row 1: Header + actions */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-sm lg:text-base font-semibold">Activity Logs</h1>
-            <div className="flex items-center gap-3 mt-0.5">
-              <span className="text-[11px] text-muted-foreground">{stats.total} total</span>
-              <span className="text-[11px] text-primary font-medium">{stats.inside} inside</span>
-              <span className="text-[11px] text-accent font-medium">{stats.completed} completed</span>
-              <span className="text-[11px] text-secondary font-medium">{stats.pending} pending</span>
+    <div className="min-h-screen bg-[#3d3229]">
+      <header className="border-b border-[#d4c5b0]/20 bg-[#3d3229]/95 backdrop-blur-md">
+        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-[#d4c5b0]/20 backdrop-blur-md border border-[#e8dcc8]/30 rounded-xl flex items-center justify-center">
+              <Shield className="w-5 h-5 text-[#f5e6d3]" />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-[16px] font-bold text-[#f5e6d3] leading-none tracking-wide">GateGuard</span>
+              <span className="text-[12px] text-[#d4c5b0] leading-tight mt-1 font-medium tracking-wider uppercase">Sabang Dexterville</span>
             </div>
           </div>
-          {selectedCount > 0 && (
-            <Button size="sm" variant="outline" className="text-[11px] h-7 rounded-lg px-2.5 text-destructive border-destructive/30 hover:bg-destructive/5" onClick={() => setShowBulkDelete(true)}>
-              <Trash2 className="mr-1 h-3 w-3" />
-              Delete {selectedCount}
-            </Button>
-          )}
+        </div>
+      </header>
+
+      <main className="max-w-7xl mx-auto px-6 py-8 space-y-6">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-[#f5e6d3] tracking-tight">
+            Activity <span className="text-[#c9a962] italic font-serif">Logs</span>
+          </h1>
+          <p className="text-[#d4c5b0] mt-2 text-sm">Monitor visitor activity and gate access history</p>
         </div>
 
-        {/* Row 2: Search + status chips + date toggle */}
-        <div className="flex items-center gap-2">
-          <div className="relative flex-1 min-w-0">
-            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-            <Input placeholder="Search..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-8 h-8 text-[12px] rounded-lg" />
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="rounded-xl bg-[#4a3f35]/60 backdrop-blur-md border border-[#d4c5b0]/20 p-4 text-center">
+            <p className="text-[10px] text-[#d4c5b0] uppercase tracking-wider font-medium">Total Records</p>
+            <p className="text-2xl font-bold text-[#f5e6d3] mt-1">{stats.total}</p>
           </div>
-          <div className="flex gap-1 shrink-0">
+          <div className="rounded-xl bg-[#4a3f35]/60 backdrop-blur-md border border-[#d4c5b0]/20 p-4 text-center">
+            <p className="text-[10px] text-[#d4c5b0] uppercase tracking-wider font-medium">Inside</p>
+            <p className="text-2xl font-bold text-[#f5e6d3] mt-1">{stats.inside}</p>
+          </div>
+          <div className="rounded-xl bg-[#4a3f35]/60 backdrop-blur-md border border-[#d4c5b0]/20 p-4 text-center">
+            <p className="text-[10px] text-[#d4c5b0] uppercase tracking-wider font-medium">Completed</p>
+            <p className="text-2xl font-bold text-[#c9a962] mt-1">{stats.completed}</p>
+          </div>
+          <div className="rounded-xl bg-[#4a3f35]/60 backdrop-blur-md border border-[#d4c5b0]/20 p-4 text-center">
+            <p className="text-[10px] text-[#d4c5b0] uppercase tracking-wider font-medium">Pending</p>
+            <p className="text-2xl font-bold text-[#c9a962] mt-1">{stats.pending}</p>
+          </div>
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between">
+          <div className="relative flex-1 max-w-md">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#d4c5b0]" />
+            <Input 
+              placeholder="Search visitors or homeowners..." 
+              value={search} 
+              onChange={(e) => setSearch(e.target.value)} 
+              className="pl-10 bg-[#4a3f35] border-[#d4c5b0]/20 text-[#f5e6d3] placeholder:text-[#d4c5b0]/50 rounded-full" 
+            />
+          </div>
+          
+          <div className="flex gap-2 flex-wrap">
             {(['all', 'pending', 'approved', 'inside', 'completed', 'denied'] as const).map((f) => (
-              <button key={f} onClick={() => setStatusFilter(f)} className={`px-2 py-0.5 rounded-full text-[10px] font-medium transition-colors ${statusFilter === f ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:bg-muted'}`}>
+              <button 
+                key={f} 
+                onClick={() => setStatusFilter(f)} 
+                className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all ${
+                  statusFilter === f 
+                    ? 'bg-[#c9a962] text-[#3d3229]' 
+                    : 'bg-[#4a3f35] text-[#d4c5b0] border border-[#d4c5b0]/20 hover:border-[#c9a962]/50'
+                }`}
+              >
                 {f.charAt(0).toUpperCase() + f.slice(1)}
               </button>
             ))}
+            <button
+              onClick={() => setShowDateFilter(!showDateFilter)}
+              className={`h-9 w-9 rounded-full flex items-center justify-center transition-all border ${
+                (dateFrom || dateTo) 
+                  ? 'bg-[#c9a962] text-[#3d3229] border-[#c9a962]' 
+                  : 'bg-[#4a3f35] text-[#d4c5b0] border-[#d4c5b0]/20 hover:border-[#c9a962]/50'
+              }`}
+            >
+              {showDateFilter ? <X className="h-4 w-4" /> : <Clock className="h-4 w-4" />}
+            </button>
           </div>
-          <button
-            onClick={() => setShowDateFilter(!showDateFilter)}
-            className={`shrink-0 h-8 w-8 rounded-lg flex items-center justify-center transition-colors ${(dateFrom || dateTo) ? 'bg-primary text-white' : 'text-muted-foreground hover:bg-muted'}`}
-          >
-            {showDateFilter ? <X className="h-3.5 w-3.5" /> : <Clock className="h-3.5 w-3.5" />}
-          </button>
         </div>
 
-        {/* Row 3: Date filter (collapsible) */}
         {showDateFilter && (
-          <div className="flex items-center gap-2 animate-fade-in">
-            <Clock className="h-3 w-3 text-muted-foreground shrink-0" />
-            <Input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} className="w-[130px] h-7 text-[11px] rounded-lg bg-muted/30 ring-0 border-0 px-2" />
-            <span className="text-[10px] text-muted-foreground">to</span>
-            <Input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} className="w-[130px] h-7 text-[11px] rounded-lg bg-muted/30 ring-0 border-0 px-2" />
+          <div className="flex items-center gap-3 animate-fade-in bg-[#4a3f35]/40 rounded-xl p-4 border border-[#d4c5b0]/10">
+            <Clock className="h-4 w-4 text-[#d4c5b0]" />
+            <div className="flex items-center gap-2">
+              <Input 
+                type="date" 
+                value={dateFrom} 
+                onChange={(e) => setDateFrom(e.target.value)} 
+                className="w-auto bg-[#3d3229] border-[#d4c5b0]/20 text-[#f5e6d3] rounded-lg text-sm" 
+              />
+              <span className="text-[#d4c5b0] text-sm">to</span>
+              <Input 
+                type="date" 
+                value={dateTo} 
+                onChange={(e) => setDateTo(e.target.value)} 
+                className="w-auto bg-[#3d3229] border-[#d4c5b0]/20 text-[#f5e6d3] rounded-lg text-sm" 
+              />
+            </div>
             {(dateFrom || dateTo) && (
-              <button onClick={() => { setDateFrom(''); setDateTo('') }} className="h-5 w-5 rounded-full flex items-center justify-center text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors">
-                <X className="h-2.5 w-2.5" />
+              <button 
+                onClick={() => { setDateFrom(''); setDateTo('') }} 
+                className="h-8 w-8 rounded-full flex items-center justify-center text-[#d4c5b0] hover:bg-red-400/10 hover:text-red-400 transition-colors"
+              >
+                <X className="h-4 w-4" />
               </button>
             )}
           </div>
         )}
-      </div>
 
-      {/* Table */}
-      {filtered.length === 0 ? (
-        <div className="flex flex-col items-center py-12 rounded-xl bg-card ring-1 ring-foreground/[0.06] shadow-card">
-          <Image src="/illustrations/no-history.png" alt="" width={120} height={120} className="opacity-60 mb-2" />
-          <p className="text-sm font-medium text-muted-foreground">No logs found</p>
-          <p className="text-[11px] text-muted-foreground/60 mt-0.5">
-            {search || statusFilter !== 'all' || dateFrom || dateTo ? 'Try adjusting your filters' : 'Activity will appear here'}
-          </p>
-        </div>
-      ) : (
-        <div className="flex flex-col flex-1 min-h-0">
-          <p className="text-[10px] text-muted-foreground px-0.5 mb-1.5 shrink-0">{filtered.length} {filtered.length === 1 ? 'record' : 'records'}</p>
-          <div className="rounded-xl bg-card ring-1 ring-foreground/[0.06] shadow-card overflow-hidden flex flex-col flex-1 min-h-0">
-            <div className="overflow-auto flex-1">
+        {selectedCount > 0 && (
+          <div className="flex items-center justify-between bg-red-400/10 border border-red-400/20 rounded-xl p-4">
+            <span className="text-sm text-red-400 font-medium">{selectedCount} record(s) selected</span>
+            <Button 
+              size="sm" 
+              variant="outline" 
+              className="text-red-400 border-red-400/30 hover:bg-red-400/10 rounded-full" 
+              onClick={() => setShowBulkDelete(true)}
+            >
+              <Trash2 className="mr-2 h-4 w-4" />
+              Delete Selected
+            </Button>
+          </div>
+        )}
+
+
+        {filtered.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-16 rounded-xl bg-[#4a3f35]/40 border border-[#d4c5b0]/10">
+            <Image src="/illustrations/no-history.png" alt="" width={120} height={120} className="opacity-60 mb-4" />
+            <p className="text-lg font-medium text-[#d4c5b0]">No logs found</p>
+            <p className="text-sm text-[#d4c5b0]/60 mt-1">
+              {search || statusFilter !== 'all' || dateFrom || dateTo ? 'Try adjusting your filters' : 'Activity will appear here'}
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            <div className="text-sm text-[#d4c5b0]">
+              Showing {filtered.length} {filtered.length === 1 ? 'record' : 'records'}
+            </div>
+            
+            <div className="rounded-xl border border-[#d4c5b0]/20 overflow-hidden bg-[#4a3f35]/40 backdrop-blur-sm">
               <table className="w-full">
-                <thead className="sticky top-0 z-10">
-                  <tr className="bg-muted border-b border-border/50">
-                    <th className="text-center px-2 py-2.5 w-[36px]">
-                      <input type="checkbox" checked={allFilteredChecked} onChange={toggleSelectAll} className="h-3.5 w-3.5 rounded border-border accent-primary cursor-pointer" />
+                <thead className="bg-[#4a3f35]">
+                  <tr>
+                    <th className="text-center px-4 py-3 w-12">
+                      <input 
+                        type="checkbox" 
+                        checked={allFilteredChecked} 
+                        onChange={toggleSelectAll} 
+                        className="h-4 w-4 rounded border-[#d4c5b0]/30 accent-[#c9a962] cursor-pointer" 
+                      />
                     </th>
-                    <th className="text-left text-[10px] font-semibold text-muted-foreground uppercase tracking-wider px-3 py-2.5">Visitor</th>
-                    <th className="text-left text-[10px] font-semibold text-muted-foreground uppercase tracking-wider px-3 py-2.5">Homeowner</th>
-                    <th className="text-left text-[10px] font-semibold text-muted-foreground uppercase tracking-wider px-3 py-2.5">Status</th>
-                    <th className="text-left text-[10px] font-semibold text-muted-foreground uppercase tracking-wider px-3 py-2.5">Guard</th>
-                    <th className="text-left text-[10px] font-semibold text-muted-foreground uppercase tracking-wider px-3 py-2.5">Entry</th>
-                    <th className="text-left text-[10px] font-semibold text-muted-foreground uppercase tracking-wider px-3 py-2.5">Exit</th>
-                    <th className="text-left text-[10px] font-semibold text-muted-foreground uppercase tracking-wider px-3 py-2.5">Date</th>
-                    <th className="text-center text-[10px] font-semibold text-muted-foreground uppercase tracking-wider px-2 py-2.5 w-[50px]"></th>
+                    <th className="text-left text-xs font-semibold text-[#d4c5b0] uppercase tracking-wider px-4 py-3">Visitor</th>
+                    <th className="text-left text-xs font-semibold text-[#d4c5b0] uppercase tracking-wider px-4 py-3">Homeowner</th>
+                    <th className="text-left text-xs font-semibold text-[#d4c5b0] uppercase tracking-wider px-4 py-3">Status</th>
+                    <th className="text-left text-xs font-semibold text-[#d4c5b0] uppercase tracking-wider px-4 py-3">Guard</th>
+                    <th className="text-left text-xs font-semibold text-[#d4c5b0] uppercase tracking-wider px-4 py-3">Entry</th>
+                    <th className="text-left text-xs font-semibold text-[#d4c5b0] uppercase tracking-wider px-4 py-3">Exit</th>
+                    <th className="text-left text-xs font-semibold text-[#d4c5b0] uppercase tracking-wider px-4 py-3">Date</th>
+                    <th className="w-16 px-4 py-3"></th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-border/20">
-                  {paginated.map((log, i) => {
+                <tbody className="divide-y divide-[#d4c5b0]/10">
+                  {paginated.map((log) => {
                     const ds = getDisplayStatus(log)
                     const key = `${log.source}-${log.id}`
                     return (
-                      <tr key={key} className={`transition-colors hover:bg-primary/[0.02] ${selectedIds.has(key) ? 'bg-primary/[0.04]' : i % 2 === 1 ? 'bg-muted/10' : ''}`}>
-                        <td className="text-center px-2 py-2">
-                          <input type="checkbox" checked={selectedIds.has(key)} onChange={() => toggleSelect(key)} className="h-3.5 w-3.5 rounded border-border accent-primary cursor-pointer" />
+                      <tr key={key} className={`hover:bg-[#4a3f35]/60 transition-colors ${selectedIds.has(key) ? 'bg-[#c9a962]/5' : ''}`}>
+                        <td className="text-center px-4 py-3">
+                          <input 
+                            type="checkbox" 
+                            checked={selectedIds.has(key)} 
+                            onChange={() => toggleSelect(key)} 
+                            className="h-4 w-4 rounded border-[#d4c5b0]/30 accent-[#c9a962] cursor-pointer" 
+                          />
                         </td>
-                        <td className="px-3 py-2">
-                          <div className="flex items-center gap-2">
-                            <div className="h-6 w-6 rounded-full overflow-hidden bg-muted/30 shrink-0">
-                              <Image src={STATUS_AVATARS[log.visitor_status] || STATUS_AVATARS.pending} alt="" width={24} height={24} className="h-full w-full object-cover" />
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-3">
+                            <div className="h-8 w-8 rounded-full overflow-hidden bg-[#4a3f35] shrink-0">
+                              <Image 
+                                src={STATUS_AVATARS[log.visitor_status] || STATUS_AVATARS.pending} 
+                                alt="" 
+                                width={32} 
+                                height={32} 
+                                className="h-full w-full object-cover" 
+                              />
                             </div>
-                            <span className="text-[12px] font-medium truncate">{log.visitor_name}</span>
+                            <span className="text-sm font-medium text-[#f5e6d3]">{log.visitor_name}</span>
                           </div>
                         </td>
-                        <td className="px-3 py-2 text-[12px] text-muted-foreground truncate max-w-0">
-                          {log.homeowner_name || <span className="text-muted-foreground/30">—</span>}
+                        <td className="px-4 py-3 text-sm text-[#d4c5b0]">
+                          {log.homeowner_name || <span className="text-[#d4c5b0]/30">—</span>}
                         </td>
-                        <td className="px-3 py-2"><StatusText status={ds} /></td>
-                        <td className="px-3 py-2 text-[12px] text-muted-foreground truncate max-w-0">{log.guard_name || <span className="text-muted-foreground/30">—</span>}</td>
-                        <td className="px-3 py-2 text-[11px] text-muted-foreground/60">
-                          {log.entry_time ? new Date(log.entry_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : <span className="text-muted-foreground/30">—</span>}
+                        <td className="px-4 py-3">
+                          <StatusText status={ds} />
                         </td>
-                        <td className="px-3 py-2 text-[11px] text-muted-foreground/60">
-                          {log.exit_time ? new Date(log.exit_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : <span className="text-muted-foreground/30">—</span>}
+                        <td className="px-4 py-3 text-sm text-[#d4c5b0]">
+                          {log.guard_name || <span className="text-[#d4c5b0]/30">—</span>}
                         </td>
-                        <td className="px-3 py-2 text-[11px] text-muted-foreground/60 whitespace-nowrap">{timeAgo(log.created_at)}</td>
-                        <td className="text-center px-2 py-2">
-                          <button onClick={() => setSelected(log)} className="inline-flex items-center justify-center h-6 w-6 rounded text-muted-foreground/40 hover:text-primary hover:bg-primary/5 transition-colors">
-                            <Eye className="h-3 w-3" />
+                        <td className="px-4 py-3 text-sm text-[#d4c5b0]">
+                          {log.entry_time ? new Date(log.entry_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : <span className="text-[#d4c5b0]/30">—</span>}
+                        </td>
+                        <td className="px-4 py-3 text-sm text-[#d4c5b0]">
+                          {log.exit_time ? new Date(log.exit_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : <span className="text-[#d4c5b0]/30">—</span>}
+                        </td>
+                        <td className="px-4 py-3 text-sm text-[#d4c5b0] whitespace-nowrap">
+                          {timeAgo(log.created_at)}
+                        </td>
+                        <td className="text-center px-4 py-3">
+                          <button 
+                            onClick={() => setSelected(log)} 
+                            className="inline-flex items-center justify-center h-8 w-8 rounded-full text-[#d4c5b0] hover:text-[#c9a962] hover:bg-[#c9a962]/10 transition-all"
+                          >
+                            <Eye className="h-4 w-4" />
                           </button>
                         </td>
                       </tr>
@@ -379,178 +477,204 @@ export default function LogsPage() {
                 </tbody>
               </table>
             </div>
+            
+            <TablePagination 
+              currentPage={currentPage} 
+              totalPages={totalPages} 
+              totalItems={filtered.length} 
+              pageSize={PAGE_SIZE} 
+              onPageChange={setCurrentPage} 
+            />
           </div>
-          <TablePagination currentPage={currentPage} totalPages={totalPages} totalItems={filtered.length} pageSize={PAGE_SIZE} onPageChange={setCurrentPage} />
-        </div>
-      )}
+        )}
 
-      {/* Detail dialog */}
-      <Dialog open={!!selected && !carouselOpen} onOpenChange={(open) => { if (!open) setSelected(null) }}>
-        <DialogContent className="sm:max-w-md p-0">
-          {selected && (() => {
-            const ds = getDisplayStatus(selected)
-            return (
-              <>
-                {/* Header */}
-                <div className="px-4 pt-4 pb-3">
+        <Dialog open={!!selected && !carouselOpen} onOpenChange={(open) => { if (!open) setSelected(null) }}>
+          <DialogContent className="sm:max-w-md bg-[#4a3f35] border-[#d4c5b0]/20 text-[#f5e6d3]">
+            {selected && (() => {
+              const ds = getDisplayStatus(selected)
+              return (
+                <div className="space-y-6">
                   <DialogHeader>
-                    <div className="flex items-center gap-2.5">
-                      <div className="h-10 w-10 rounded-full overflow-hidden bg-muted/30 shrink-0">
-                        <Image src={STATUS_AVATARS[selected.visitor_status] || STATUS_AVATARS.pending} alt="" width={40} height={40} className="h-full w-full object-cover" />
+                    <div className="flex items-center gap-3">
+                      <div className="h-12 w-12 rounded-full overflow-hidden bg-[#3d3229]">
+                        <Image 
+                          src={STATUS_AVATARS[selected.visitor_status] || STATUS_AVATARS.pending} 
+                          alt="" 
+                          width={48} 
+                          height={48} 
+                          className="h-full w-full object-cover" 
+                        />
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <DialogTitle className="text-[14px] font-semibold">{selected.visitor_name}</DialogTitle>
+                      <div>
+                        <DialogTitle className="text-lg font-semibold text-[#f5e6d3]">{selected.visitor_name}</DialogTitle>
+                        <StatusText status={ds} />
                       </div>
                     </div>
                   </DialogHeader>
-                </div>
 
-                {/* Visitor details */}
-                <div className="px-4 pb-3">
-                  <p className="text-[9px] font-semibold text-muted-foreground/60 uppercase tracking-wider mb-1.5">Visitor Details</p>
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="rounded-lg bg-muted/20 px-2.5 py-2">
-                      <span className="text-[9px] text-muted-foreground/60 uppercase tracking-wider flex items-center gap-1"><User className="h-2.5 w-2.5" /> Purpose</span>
-                      <p className="text-[12px] font-medium mt-0.5">{selected.purpose}</p>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-[#3d3229] rounded-lg p-3 border border-[#d4c5b0]/10">
+                      <span className="text-xs text-[#d4c5b0] uppercase tracking-wider flex items-center gap-1">
+                        <User className="h-3 w-3" /> Purpose
+                      </span>
+                      <p className="text-sm font-medium text-[#f5e6d3] mt-1">{selected.purpose}</p>
                     </div>
-                    <div className="rounded-lg bg-muted/20 px-2.5 py-2">
-                      <span className="text-[9px] text-muted-foreground/60 uppercase tracking-wider flex items-center gap-1"><Car className="h-2.5 w-2.5" /> Vehicle</span>
-                      <p className="text-[12px] font-medium mt-0.5">{selected.vehicle_plate || '—'}</p>
+                    <div className="bg-[#3d3229] rounded-lg p-3 border border-[#d4c5b0]/10">
+                      <span className="text-xs text-[#d4c5b0] uppercase tracking-wider flex items-center gap-1">
+                        <Car className="h-3 w-3" /> Vehicle
+                      </span>
+                      <p className="text-sm font-medium text-[#f5e6d3] mt-1">{selected.vehicle_plate || '—'}</p>
                     </div>
-                    <div className="rounded-lg bg-muted/20 px-2.5 py-2">
-                      <span className="text-[9px] text-muted-foreground/60 uppercase tracking-wider flex items-center gap-1"><MapPin className="h-2.5 w-2.5" /> Homeowner</span>
-                      <p className="text-[12px] font-medium mt-0.5">
+                    <div className="bg-[#3d3229] rounded-lg p-3 border border-[#d4c5b0]/10">
+                      <span className="text-xs text-[#d4c5b0] uppercase tracking-wider flex items-center gap-1">
+                        <MapPin className="h-3 w-3" /> Homeowner
+                      </span>
+                      <p className="text-sm font-medium text-[#f5e6d3] mt-1">
                         {selected.homeowner_name || '—'}
-                        {selected.homeowner_block && <span className="text-muted-foreground font-normal"> ({selected.homeowner_block}, {selected.homeowner_lot})</span>}
+                        {selected.homeowner_block && <span className="text-[#d4c5b0]"> ({selected.homeowner_block}, {selected.homeowner_lot})</span>}
                       </p>
                     </div>
-                    <div className="rounded-lg bg-muted/20 px-2.5 py-2">
-                      <span className="text-[9px] text-muted-foreground/60 uppercase tracking-wider flex items-center gap-1"><Shield className="h-2.5 w-2.5" /> Guard</span>
-                      <p className="text-[12px] font-medium mt-0.5">{selected.guard_name || '—'}</p>
+                    <div className="bg-[#3d3229] rounded-lg p-3 border border-[#d4c5b0]/10">
+                      <span className="text-xs text-[#d4c5b0] uppercase tracking-wider flex items-center gap-1">
+                        <Shield className="h-3 w-3" /> Guard
+                      </span>
+                      <p className="text-sm font-medium text-[#f5e6d3] mt-1">{selected.guard_name || '—'}</p>
                     </div>
                   </div>
-                </div>
 
-                {/* Gate activity */}
-                <div className="px-4 pb-3">
-                  <p className="text-[9px] font-semibold text-muted-foreground/60 uppercase tracking-wider mb-1.5">Gate Activity</p>
-                  <div className="rounded-lg bg-muted/20 divide-y divide-border/30">
-                    <div className="flex items-center justify-between px-2.5 py-2">
-                      <span className="text-[11px] text-muted-foreground flex items-center gap-1.5"><ScanLine className="h-3 w-3 text-muted-foreground/50" /> Registered</span>
-                      <span className="text-[11px] font-medium">{new Date(selected.created_at).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+                  <div className="bg-[#3d3229] rounded-lg p-4 border border-[#d4c5b0]/10 space-y-3">
+                    <p className="text-xs text-[#d4c5b0] uppercase tracking-wider font-semibold">Timeline</p>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-[#d4c5b0] flex items-center gap-2">
+                        <ScanLine className="h-4 w-4" /> Registered
+                      </span>
+                      <span className="text-sm text-[#f5e6d3]">
+                        {new Date(selected.created_at).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                      </span>
                     </div>
                     {selected.entry_time && (
-                      <div className="flex items-center justify-between px-2.5 py-2">
-                        <span className="text-[11px] text-accent flex items-center gap-1.5"><LogIn className="h-3 w-3" /> Entry</span>
-                        <span className="text-[11px] font-medium text-accent">{new Date(selected.entry_time).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-[#c9a962] flex items-center gap-2">
+                          <LogIn className="h-4 w-4" /> Entry
+                        </span>
+                        <span className="text-sm text-[#f5e6d3]">
+                          {new Date(selected.entry_time).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                        </span>
                       </div>
                     )}
                     {selected.exit_time && (
-                      <div className="flex items-center justify-between px-2.5 py-2">
-                        <span className="text-[11px] text-muted-foreground flex items-center gap-1.5"><LogOut className="h-3 w-3" /> Exit</span>
-                        <span className="text-[11px] font-medium">{new Date(selected.exit_time).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-[#d4c5b0] flex items-center gap-2">
+                          <LogOut className="h-4 w-4" /> Exit
+                        </span>
+                        <span className="text-sm text-[#f5e6d3]">
+                          {new Date(selected.exit_time).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                        </span>
                       </div>
                     )}
                   </div>
-                </div>
 
-                {/* Status */}
-                <div className="px-4 pb-3">
-                  <p className="text-[9px] font-semibold text-muted-foreground/60 uppercase tracking-wider mb-1.5">Status</p>
-                  {ds === 'pending' && (
-                    <div className="rounded-lg bg-secondary/5 border border-secondary/20 px-3 py-2.5 flex items-center gap-2">
-                      <Clock className="h-4 w-4 text-secondary shrink-0" />
-                      <p className="text-[12px] text-secondary font-medium">Waiting for homeowner approval</p>
-                    </div>
-                  )}
-                  {ds === 'approved' && (
-                    <div className="rounded-lg bg-accent/5 border border-accent/20 px-3 py-2.5 flex items-center gap-2">
-                      <LogIn className="h-4 w-4 text-accent shrink-0" />
-                      <p className="text-[12px] text-accent font-medium">Approved — awaiting guard confirmation</p>
-                    </div>
-                  )}
-                  {ds === 'inside' && (
-                    <div className="rounded-lg bg-primary/5 border border-primary/20 px-3 py-2.5 flex items-center gap-2">
-                      <LogIn className="h-4 w-4 text-primary shrink-0" />
-                      <p className="text-[12px] text-primary font-medium">Visitor is inside the subdivision</p>
-                    </div>
-                  )}
-                  {ds === 'completed' && (
-                    <div className="rounded-lg bg-muted/30 border border-border px-3 py-2.5 flex items-center gap-2">
-                      <LogOut className="h-4 w-4 text-muted-foreground shrink-0" />
-                      <p className="text-[12px] text-muted-foreground font-medium">Visit completed</p>
-                    </div>
-                  )}
-                  {ds === 'denied' && (
-                    <div className="rounded-lg bg-destructive/5 border border-destructive/20 px-3 py-2.5 flex items-center gap-2">
-                      <X className="h-4 w-4 text-destructive shrink-0" />
-                      <p className="text-[12px] text-destructive font-medium">Entry denied by homeowner</p>
-                    </div>
-                  )}
-                  {ds === 'registered' && (
-                    <div className="rounded-lg bg-muted/30 border border-border px-3 py-2.5 flex items-center gap-2">
-                      <Clock className="h-4 w-4 text-muted-foreground shrink-0" />
-                      <p className="text-[12px] text-muted-foreground font-medium">Registered — not yet at gate</p>
-                    </div>
-                  )}
-                </div>
-
-                {/* QR + Proof */}
-                {(selected.qr_code || (selected.proof_urls?.length ?? 0) > 0) && (
-                  <div className="px-4 pb-4">
-                    {selected.qr_code && (
-                      <div className="rounded-lg bg-muted/20 p-3 flex flex-col items-center mb-2">
-                        <span className="text-[9px] text-muted-foreground/60 uppercase tracking-wider flex items-center gap-1 mb-2"><QrCode className="h-2.5 w-2.5" /> QR Code</span>
-                        <QRCodeSVG value={selected.qr_code} size={100} level="H" includeMargin imageSettings={{ src: '/logo.png', width: 20, height: 20, excavate: true }} />
-                      </div>
-                    )}
-                    {(selected.proof_urls?.length ?? 0) > 0 && (
-                      <div>
-                        <p className="text-[9px] font-semibold text-muted-foreground/60 uppercase tracking-wider mb-1.5">Proof Photos</p>
-                        <ProofGallery
-                          urls={selected.proof_urls ?? []}
-                          onImageClick={(i) => { setCarouselIndex(i); setCarouselOpen(true) }}
-                        />
-                      </div>
-                    )}
+                  <div className={`rounded-lg p-4 border flex items-center gap-3 ${
+                    ds === 'inside' ? 'bg-[#c9a962]/10 border-[#c9a962]/30' :
+                    ds === 'completed' ? 'bg-[#4a3f35] border-[#d4c5b0]/20' :
+                    ds === 'denied' ? 'bg-red-400/10 border-red-400/30' :
+                    'bg-[#c9a962]/10 border-[#c9a962]/30'
+                  }`}>
+                    {ds === 'inside' && <LogIn className="h-5 w-5 text-[#c9a962]" />}
+                    {ds === 'completed' && <LogOut className="h-5 w-5 text-[#d4c5b0]" />}
+                    {ds === 'denied' && <X className="h-5 w-5 text-red-400" />}
+                    {ds === 'pending' && <Clock className="h-5 w-5 text-[#c9a962]" />}
+                    <p className={`text-sm font-medium ${
+                      ds === 'inside' ? 'text-[#c9a962]' :
+                      ds === 'completed' ? 'text-[#d4c5b0]' :
+                      ds === 'denied' ? 'text-red-400' :
+                      'text-[#c9a962]'
+                    }`}>
+                      {ds === 'inside' ? 'Visitor is currently inside' :
+                       ds === 'completed' ? 'Visit completed' :
+                       ds === 'denied' ? 'Entry denied by homeowner' :
+                       ds === 'pending' ? 'Waiting for approval' :
+                       'Registered — not yet at gate'}
+                    </p>
                   </div>
-                )}
 
-                {!selected.qr_code && (selected.proof_urls?.length ?? 0) === 0 && <div className="h-1" />}
-              </>
-            )
-          })()}
-        </DialogContent>
-      </Dialog>
+                  {(selected.qr_code || (selected.proof_urls?.length ?? 0) > 0) && (
+                    <div className="space-y-4">
+                      {selected.qr_code && (
+                        <div className="bg-[#3d3229] rounded-lg p-4 border border-[#d4c5b0]/10 flex flex-col items-center">
+                          <span className="text-xs text-[#d4c5b0] uppercase tracking-wider flex items-center gap-1 mb-3">
+                            <QrCode className="h-3 w-3" /> QR Code
+                          </span>
+                          <QRCodeSVG 
+                            value={selected.qr_code} 
+                            size={120} 
+                            level="H" 
+                            includeMargin 
+                            imageSettings={{ src: '/logo.png', width: 24, height: 24, excavate: true }} 
+                          />
+                        </div>
+                      )}
+                      {(selected.proof_urls?.length ?? 0) > 0 && (
+                        <div>
+                          <p className="text-xs text-[#d4c5b0] uppercase tracking-wider mb-2">Proof Photos</p>
+                          <ProofGallery
+                            urls={selected.proof_urls ?? []}
+                            onImageClick={(i) => { setCarouselIndex(i); setCarouselOpen(true) }}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )
+            })()}
+          </DialogContent>
+        </Dialog>
 
-      <ImageCarousel
-        urls={selected?.proof_urls ?? []}
-        initialIndex={carouselIndex}
-        open={carouselOpen}
-        onClose={() => setCarouselOpen(false)}
-      />
+        <ImageCarousel
+          urls={selected?.proof_urls ?? []}
+          initialIndex={carouselIndex}
+          open={carouselOpen}
+          onClose={() => setCarouselOpen(false)}
+        />
 
-      {/* Bulk delete dialog — double confirmation */}
-      <BulkDialog open={showBulkDelete} onOpenChange={(open) => { if (!open) { setShowBulkDelete(false); setBulkDeleteConfirmText('') } }}>
-        <BulkDialogContent className="sm:max-w-sm p-0">
-          <div className="px-4 pt-4 pb-3">
-            <BulkDialogHeader><BulkDialogTitle className="text-[14px] font-semibold text-destructive">Delete {selectedCount} Record(s)</BulkDialogTitle></BulkDialogHeader>
-            <p className="text-[11px] text-muted-foreground mt-1">This action cannot be undone. All selected visit logs and visitor records will be permanently removed.</p>
-          </div>
-          <div className="px-4 pb-4 space-y-3">
-            <div className="rounded-lg bg-destructive/5 border border-destructive/20 px-3 py-2.5">
-              <p className="text-[12px] text-destructive font-medium">Type DELETE to confirm</p>
+        <BulkDialog open={showBulkDelete} onOpenChange={(open) => { if (!open) { setShowBulkDelete(false); setBulkDeleteConfirmText('') } }}>
+          <BulkDialogContent className="bg-[#4a3f35] border-[#d4c5b0]/20 text-[#f5e6d3]">
+            <BulkDialogHeader>
+              <BulkDialogTitle className="text-destructive">Delete {selectedCount} Record(s)</BulkDialogTitle>
+            </BulkDialogHeader>
+            <p className="text-sm text-[#d4c5b0] mt-2">This action cannot be undone. All selected records will be permanently removed.</p>
+            <div className="mt-4 space-y-3">
+              <div className="bg-red-400/10 border border-red-400/20 rounded-lg p-3">
+                <p className="text-sm text-red-400 font-medium">Type DELETE to confirm</p>
+              </div>
+              <Input 
+                placeholder="Type DELETE" 
+                value={bulkDeleteConfirmText} 
+                onChange={(e) => setBulkDeleteConfirmText(e.target.value)} 
+                className="bg-[#3d3229] border-[#d4c5b0]/20 text-[#f5e6d3]" 
+              />
+              <div className="flex gap-2">
+                <Button 
+                  onClick={handleBulkDelete} 
+                  disabled={bulkDeleteConfirmText !== 'DELETE' || bulkDeleteLoading} 
+                  variant="destructive" 
+                  className="flex-1"
+                >
+                  {bulkDeleteLoading ? 'Deleting...' : `Delete ${selectedCount}`}
+                </Button>
+                <Button 
+                  variant="outline" 
+                  onClick={() => { setShowBulkDelete(false); setBulkDeleteConfirmText('') }}
+                  className="border-[#d4c5b0]/20 text-[#f5e6d3] hover:bg-[#4a3f35]"
+                >
+                  Cancel
+                </Button>
+              </div>
             </div>
-            <Input placeholder="Type DELETE" value={bulkDeleteConfirmText} onChange={(e) => setBulkDeleteConfirmText(e.target.value)} className="h-10 lg:h-9 rounded-lg" />
-            <div className="flex gap-2 pt-1">
-              <Button onClick={handleBulkDelete} disabled={bulkDeleteConfirmText !== 'DELETE' || bulkDeleteLoading} variant="destructive" className="flex-1 h-10 text-sm rounded-lg">
-                {bulkDeleteLoading ? 'Deleting...' : `Delete ${selectedCount} Record(s)`}
-              </Button>
-              <Button variant="outline" onClick={() => { setShowBulkDelete(false); setBulkDeleteConfirmText('') }} className="h-10 text-sm rounded-lg">Cancel</Button>
-            </div>
-          </div>
-        </BulkDialogContent>
-      </BulkDialog>
+          </BulkDialogContent>
+        </BulkDialog>
+      </main>
     </div>
   )
 }

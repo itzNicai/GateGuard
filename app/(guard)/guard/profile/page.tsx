@@ -211,7 +211,7 @@ export default function GuardProfilePage() {
       <div className="lg:sticky lg:top-20 lg:self-start space-y-4">
         <div className="rounded-xl bg-card ring-1 ring-foreground/[0.06] shadow-card overflow-hidden">
           <div className="h-24 lg:h-28 bg-gradient-to-r from-primary to-primary/80 relative overflow-hidden">
-            <Image src="/illustrations/profile.png" alt="" width={160} height={160} className="absolute right-0 -bottom-4 opacity-20 object-contain" />
+            <Image src="/illustrations/logo1.png" alt="" width={160} height={160} className="absolute right-0 -bottom-4 opacity-20 object-contain" />
           </div>
           <div className="px-4 pb-4 -mt-10 flex flex-col items-center">
             <div className="relative">
@@ -356,38 +356,7 @@ export default function GuardProfilePage() {
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Change Password</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Form {...passwordForm}>
-                <form
-                  onSubmit={passwordForm.handleSubmit(() => requestPasswordChange())}
-                  className="space-y-3"
-                >
-                  <FormField control={passwordForm.control} name="newPassword" render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>New Password</FormLabel>
-                      <FormControl><PasswordInput placeholder="Min. 8 characters" {...field} className="text-[16px] lg:text-sm" /></FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )} />
-                  <FormField control={passwordForm.control} name="confirmPassword" render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Confirm Password</FormLabel>
-                      <FormControl><PasswordInput placeholder="Re-enter password" {...field} className="text-[16px] lg:text-sm" /></FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )} />
-                  <Button type="submit" size="sm" disabled={savingPassword}>
-                    {savingPassword && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    Update Password
-                  </Button>
-                </form>
-              </Form>
-            </CardContent>
-          </Card>
+         
         </div>
 
         {/* End Shift — mobile only */}

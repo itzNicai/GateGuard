@@ -44,7 +44,7 @@ export default function ResetPasswordPage() {
     return (
       <div className="rounded-xl bg-card ring-1 ring-foreground/[0.06] shadow-card overflow-hidden">
         <div className="bg-gradient-to-r from-accent to-accent/80 px-5 py-6 flex flex-col items-center relative overflow-hidden">
-          <Image src="/illustrations/notif-approved.png" alt="" width={140} height={140} className="absolute -right-4 -bottom-4 opacity-15 object-contain" />
+          <Image src="/illustrations/pfp.png" alt="" width={140} height={140} className="absolute -right-4 -bottom-4 opacity-15 object-contain" />
           <div className="relative z-10 flex flex-col items-center">
             <div className="h-14 w-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mb-3">
               <CheckCircle2 className="h-7 w-7 text-white" />
@@ -74,7 +74,7 @@ export default function ResetPasswordPage() {
             Choose a strong password for your account.
           </p>
         </div>
-        <Image src="/illustrations/profile.png" alt="" width={70} height={70} className="object-contain shrink-0 opacity-90" />
+        <Image src="/illustrations/logo1.png" alt="" width={70} height={70} className="object-contain shrink-0 opacity-90" />
       </div>
 
       <div className="rounded-xl bg-card ring-1 ring-foreground/[0.06] shadow-card overflow-hidden">

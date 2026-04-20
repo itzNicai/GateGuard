@@ -140,7 +140,6 @@ export default function HomeownersPage() {
   return (
     <div className="flex flex-col h-[calc(100vh-52px)] overflow-hidden -mb-8">
       <div className="shrink-0 space-y-3 pb-3">
-        {/* Row 1: Header */}
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-sm lg:text-base font-semibold">Homeowners</h1>
@@ -153,7 +152,6 @@ export default function HomeownersPage() {
           </div>
         </div>
 
-        {/* Row 2: Search + status chips */}
         <div className="flex items-center gap-2">
           <div className="relative flex-1 min-w-0">
             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
@@ -174,7 +172,6 @@ export default function HomeownersPage() {
         </div>
       </div>
 
-      {/* Table */}
       {filtered.length === 0 ? (
         <div className="flex flex-col items-center py-12 rounded-xl bg-card ring-1 ring-foreground/[0.06] shadow-card">
           <Users className="h-8 w-8 text-muted-foreground/30 mb-2" />
@@ -266,7 +263,6 @@ export default function HomeownersPage() {
         onAction={handleAction}
       />
 
-      {/* Delete — double confirmation */}
       <Dialog open={!!deleteTarget} onOpenChange={(open) => { if (!open) { setDeleteTarget(null); setDeleteConfirmText('') } }}>
         <DialogContent className="sm:max-w-sm p-0">
           <div className="px-5 pt-5 pb-3">

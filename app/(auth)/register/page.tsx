@@ -119,10 +119,10 @@ export default function RegisterPage() {
 
   if (success) {
     return (
-      <div className="rounded-xl bg-card ring-1 ring-foreground/[0.06] shadow-card overflow-hidden">
+      <div className="rounded-xl bg-card ring-1 ring-[#c9a96e]/30 shadow-[0_0_30px_rgba(201,169,110,0.15)] overflow-hidden hover:shadow-[0_0_50px_rgba(201,169,110,0.4)] hover:shadow-[0_0_80px_rgba(201,169,110,0.2)] hover:ring-[#c9a96e]/60 hover:ring-2 transition-all duration-300">
         {/* Success banner */}
         <div className="bg-gradient-to-r from-accent to-accent/80 px-5 py-6 flex flex-col items-center relative overflow-hidden">
-          <Image src="/illustrations/notif-approved.png" alt="" width={160} height={160} className="absolute -right-4 -bottom-4 opacity-15 object-contain" />
+          <Image src="/illustrations/pfp.png" alt="" width={160} height={160} className="absolute -right-4 -bottom-4 opacity-15 object-contain" />
           <div className="relative z-10 flex flex-col items-center">
             <div className="h-16 w-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mb-3">
               <CheckCircle2 className="h-8 w-8 text-white" />
@@ -164,7 +164,7 @@ export default function RegisterPage() {
             </div>
           </div>
 
-          <Button onClick={() => router.push('/login')} className="w-full h-11 text-sm rounded-lg shadow-sm mt-2">
+          <Button onClick={() => router.push('/login')} className="w-full h-11 text-sm rounded-lg shadow-sm mt-2 hover:shadow-[0_0_25px_rgba(201,169,110,0.6)] hover:shadow-[0_0_50px_rgba(201,169,110,0.4)] hover:shadow-[0_0_75px_rgba(201,169,110,0.2)] transition-all duration-300">
             <Mail className="mr-2 h-4 w-4" />
             Back to Sign In
           </Button>
@@ -184,7 +184,7 @@ export default function RegisterPage() {
           </p>
         </div>
         <Image
-          src="/illustrations/profile.png"
+          src="/illustrations/logo1.png"
           alt=""
           width={80}
           height={80}
@@ -192,8 +192,8 @@ export default function RegisterPage() {
         />
       </div>
 
-      {/* Form card */}
-      <div className="rounded-xl bg-card ring-1 ring-foreground/[0.06] shadow-card overflow-hidden">
+      {/* Form card - GOLDEN glow like Visitor Check-In */}
+      <div className="rounded-xl bg-card ring-1 ring-[#c9a96e]/30 shadow-[0_0_30px_rgba(201,169,110,0.15)] overflow-hidden hover:shadow-[0_0_50px_rgba(201,169,110,0.4)] hover:shadow-[0_0_80px_rgba(201,169,110,0.2)] hover:ring-[#c9a96e]/60 hover:ring-2 transition-all duration-300">
         {error && (
           <div className="mx-5 mt-5 rounded-lg bg-destructive/5 border border-destructive/20 px-3 py-2.5">
             <p className="text-[12px] text-destructive font-medium">{error}</p>
@@ -328,8 +328,8 @@ export default function RegisterPage() {
                 </div>
               </div>
 
-              {/* Submit */}
-              <Button type="submit" className="w-full h-11 text-sm rounded-lg shadow-sm" disabled={loading}>
+              {/* Submit - GOLDEN glow */}
+              <Button type="submit" className="w-full h-11 text-sm rounded-lg shadow-sm hover:shadow-[0_0_25px_rgba(201,169,110,0.6)] hover:shadow-[0_0_50px_rgba(201,169,110,0.4)] hover:shadow-[0_0_75px_rgba(201,169,110,0.2)] transition-all duration-300" disabled={loading}>
                 {loading ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : (

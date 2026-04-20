@@ -144,9 +144,7 @@ export default function BlocksLotsPage() {
 
   return (
     <div className="flex flex-col h-[calc(100vh-52px)] overflow-hidden -mb-8">
-      {/* Top section — fixed */}
       <div className="shrink-0 space-y-3 pb-3">
-        {/* Row 1: Header + actions */}
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-sm lg:text-base font-semibold">Blocks & Lots</h1>
@@ -174,7 +172,6 @@ export default function BlocksLotsPage() {
           </div>
         </div>
 
-        {/* Row 2: Search + status chips */}
         <div className="flex items-center gap-2">
           <div className="relative flex-1 min-w-0">
             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
@@ -189,7 +186,6 @@ export default function BlocksLotsPage() {
           </div>
         </div>
 
-        {/* Row 3: Block chips */}
         <div className="flex gap-1 overflow-x-auto pb-0.5 -mx-0.5 px-0.5">
           <button onClick={() => setSelectedBlock(null)} className={`shrink-0 px-2 py-0.5 rounded-full text-[10px] font-medium transition-colors ${!selectedBlock ? 'bg-primary/10 text-primary ring-1 ring-primary/20' : 'text-muted-foreground hover:bg-muted'}`}>
             All
@@ -206,7 +202,6 @@ export default function BlocksLotsPage() {
         </div>
       </div>
 
-      {/* Table — scrollable */}
       {filtered.length === 0 ? (
         <div className="flex flex-col items-center py-12 rounded-xl bg-card ring-1 ring-foreground/[0.06] shadow-card">
           <MapPin className="h-8 w-8 text-muted-foreground/30 mb-2" />
@@ -272,7 +267,6 @@ export default function BlocksLotsPage() {
         </div>
       )}
 
-      {/* Add dialog */}
       <Dialog open={showAdd} onOpenChange={setShowAdd}>
         <DialogContent className="sm:max-w-sm p-0">
           <div className="px-5 pt-5 pb-3"><DialogHeader><DialogTitle className="text-[14px] font-semibold">Add Block & Lot</DialogTitle></DialogHeader></div>
@@ -293,7 +287,6 @@ export default function BlocksLotsPage() {
         </DialogContent>
       </Dialog>
 
-      {/* Bulk add dialog */}
       <Dialog open={showBulkAdd} onOpenChange={setShowBulkAdd}>
         <DialogContent className="sm:max-w-sm p-0">
           <div className="px-5 pt-5 pb-3">
@@ -322,7 +315,6 @@ export default function BlocksLotsPage() {
         </DialogContent>
       </Dialog>
 
-      {/* Bulk delete — double confirmation */}
       <Dialog open={showBulkDelete} onOpenChange={(open) => { if (!open) { setShowBulkDelete(false); setBulkDeleteConfirmText('') } }}>
         <DialogContent className="sm:max-w-sm p-0">
           <div className="px-5 pt-5 pb-3">
@@ -344,7 +336,6 @@ export default function BlocksLotsPage() {
         </DialogContent>
       </Dialog>
 
-      {/* Single delete */}
       <ConfirmDialog open={!!deleteTarget} onClose={() => setDeleteTarget(null)} onConfirm={handleDelete} title="Remove Block & Lot" description={`Remove ${deleteTarget?.block}, ${deleteTarget?.lot}? This cannot be undone.`} confirmLabel="Remove" variant="destructive" />
     </div>
   )

@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/shared/password-input'
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from '@/components/ui/form'
-import { LogIn, Loader2, Mail, Lock } from 'lucide-react'
+import { LogIn, Loader2, Mail, Lock, ArrowRight } from 'lucide-react'
 
 const STATUS_MESSAGES: Record<string, { text: string; type: 'warning' | 'error' }> = {
   awaiting_approval: { text: 'Your account is awaiting admin approval.', type: 'warning' },
@@ -38,7 +38,6 @@ function LoginForm() {
     setLoading(true)
     setError(null)
 
-    // Step 1: Rate-limited server check
     try {
       const rateRes = await fetch('/api/auth/login', {
         method: 'POST',
@@ -58,7 +57,6 @@ function LoginForm() {
       return
     }
 
-    // Step 2: Create client session (rate limit passed)
     const supabase = createClient()
     const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword(values)
 
@@ -111,108 +109,163 @@ function LoginForm() {
   const statusMsg = message ? STATUS_MESSAGES[message] : null
 
   return (
-    <div className="space-y-5">
-      {/* Hero */}
-      <div className="flex items-center gap-4">
-        <div className="flex-1">
-          <h1 className="text-lg lg:text-xl font-bold text-foreground">Welcome Back</h1>
-          <p className="text-[12px] lg:text-sm text-muted-foreground mt-0.5">
+    <div className="w-full max-w-[480px] mx-auto relative">
+      {/* Ambient background glows */}
+      <div className="absolute -inset-20 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-[400px] h-[400px] bg-[#c9a962]/10 rounded-full blur-[100px] animate-pulse" />
+        <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-[#c9a962]/10 rounded-full blur-[100px] animate-pulse" />
+      </div>
+
+      <div className="flex items-start justify-between mb-8 relative">
+        <div>
+          <h1 className="text-[28px] font-bold text-[#f5e6d3] mb-2 drop-shadow-[0_0_10px_rgba(201,169,98,0.3)]">Welcome Back</h1>
+          <p className="text-[15px] text-[#d4c5b0]">
             Sign in to your GateGuard account.
           </p>
         </div>
-        <Image
-          src="/illustrations/profile.png"
-          alt=""
-          width={80}
-          height={80}
-          className="object-contain shrink-0 opacity-90"
-        />
+        <div className="relative w-20 h-20 shrink-0 group">
+          <div className="absolute inset-0 bg-[#c9a962]/30 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-all duration-500 scale-125" />
+          <Image
+            src="/illustrations/logo1.png"
+            alt=""
+            fill
+            className="object-contain opacity-90 relative z-10"
+          />
+        </div>
       </div>
 
-      {/* Form card */}
-      <div className="rounded-xl bg-card ring-1 ring-foreground/[0.06] shadow-card overflow-hidden">
-        {/* Status message banner */}
-        {statusMsg && (
-          <div className={`mx-5 mt-5 rounded-lg px-3 py-2.5 flex items-start gap-2 ${
-            statusMsg.type === 'warning'
-              ? 'bg-secondary/5 border border-secondary/20'
-              : 'bg-destructive/5 border border-destructive/20'
-          }`}>
-            <p className={`text-[12px] font-medium ${
-              statusMsg.type === 'warning' ? 'text-secondary' : 'text-destructive'
-            }`}>{statusMsg.text}</p>
-          </div>
-        )}
+      {/* Glowing card container */}
+      <div className="relative group">
+        {/* Outer glow layers */}
+        <div className="absolute -inset-1 bg-gradient-to-r from-[#c9a962]/30 via-[#c9a962]/60 to-[#c9a962]/30 rounded-2xl blur-lg opacity-40 group-hover:opacity-80 transition duration-1000 group-hover:duration-200 animate-pulse" />
+        <div className="absolute -inset-2 bg-gradient-to-r from-[#c9a962]/20 via-[#c9a962]/40 to-[#c9a962]/20 rounded-2xl blur-xl opacity-30 group-hover:opacity-60 transition duration-700" />
+        <div className="absolute -inset-1 bg-[#c9a962]/20 rounded-2xl blur-md opacity-20 group-hover:opacity-50 transition duration-500" />
+        
+        {/* Rotating gradient border effect */}
+        <div className="absolute -inset-[2px] bg-gradient-to-r from-[#c9a962]/0 via-[#c9a962]/80 to-[#c9a962]/0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-[2px]" />
 
-        {/* Error banner */}
-        {error && (
-          <div className="mx-5 mt-5 rounded-lg bg-destructive/5 border border-destructive/20 px-3 py-2.5">
-            <p className="text-[12px] text-destructive font-medium">{error}</p>
-          </div>
-        )}
+        <div className="rounded-2xl bg-[#4a3f35] border-2 border-[#c9a962]/30 p-8 shadow-[0_0_40px_rgba(201,169,98,0.15)] overflow-hidden relative group-hover:border-[#c9a962]/50 group-hover:shadow-[0_0_60px_rgba(201,169,98,0.25)] transition-all duration-500">
+          {/* Animated top accent line */}
+          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#c9a962] to-transparent shadow-[0_0_10px_rgba(201,169,98,0.8)]" />
+          <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#c9a962]/0 via-[#c9a962]/50 to-[#c9a962]/0 blur-sm" />
+          
+          {/* Corner glows */}
+          <div className="absolute top-0 left-0 w-32 h-32 bg-[#c9a962]/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 animate-pulse" />
+          <div className="absolute bottom-0 right-0 w-32 h-32 bg-[#c9a962]/20 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 animate-pulse" />
+          <div className="absolute top-0 right-0 w-24 h-24 bg-[#c9a962]/10 rounded-full blur-2xl translate-x-1/2 -translate-y-1/2" />
+          <div className="absolute bottom-0 left-0 w-24 h-24 bg-[#c9a962]/10 rounded-full blur-2xl -translate-x-1/2 translate-y-1/2" />
+          
+          {/* Side glows */}
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-gradient-to-b from-transparent via-[#c9a962]/30 to-transparent blur-sm" />
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1 h-1/2 bg-gradient-to-b from-transparent via-[#c9a962]/30 to-transparent blur-sm" />
 
-        <div className="p-5 lg:p-6">
+          {statusMsg && (
+            <div className={`mb-6 rounded-lg px-4 py-3 border ${
+              statusMsg.type === 'warning'
+                ? 'bg-[#c9a962]/10 border-[#c9a962]/30'
+                : 'bg-red-500/10 border-red-500/30'
+            }`}>
+              <p className={`text-[13px] font-medium ${
+                statusMsg.type === 'warning' ? 'text-[#c9a962]' : 'text-red-400'
+              }`}>{statusMsg.text}</p>
+            </div>
+          )}
+
+          {error && (
+            <div className="mb-6 rounded-lg bg-red-500/10 border border-red-500/30 px-4 py-3">
+              <p className="text-[13px] text-red-400 font-medium">{error}</p>
+            </div>
+          )}
+
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 relative z-10">
               <FormField
                 control={form.control}
                 name="email"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="flex items-center gap-1.5 text-[12px]">
-                      <Mail className="h-3 w-3 text-muted-foreground" />
+                  <FormItem className="space-y-2">
+                    <FormLabel className="flex items-center gap-2 text-[14px] text-[#e8dcc8] font-semibold">
+                      <Mail className="h-4 w-4 text-[#c9a962]" />
                       Email
                     </FormLabel>
                     <FormControl>
-                      <Input type="email" placeholder="you@example.com" autoComplete="email" className="h-10 lg:h-9 rounded-lg" {...field} />
+                      <Input 
+                        type="email" 
+                        placeholder="you@example.com" 
+                        autoComplete="email" 
+                        className="h-12 rounded-xl bg-white border-0 text-[#3d3229] placeholder:text-[#3d3229]/40 focus:ring-2 focus:ring-[#c9a962] shadow-[0_0_15px_rgba(201,169,98,0.1)] focus:shadow-[0_0_20px_rgba(201,169,98,0.3)] transition-all duration-300" 
+                        {...field} 
+                      />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-red-400 text-[12px]" />
                   </FormItem>
                 )}
               />
+              
               <FormField
                 control={form.control}
                 name="password"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <FormLabel className="flex items-center gap-1.5 text-[12px]">
-                        <Lock className="h-3 w-3 text-muted-foreground" />
+                      <FormLabel className="flex items-center gap-2 text-[14px] text-[#e8dcc8] font-semibold">
+                        <Lock className="h-4 w-4 text-[#c9a962]" />
                         Password
                       </FormLabel>
-                      <Link href="/forgot-password" className="text-[11px] text-primary hover:underline font-medium">
-                        Forgot password?
+                      <Link href="/forgot-password" className="text-[13px] text-[#c9a962] hover:text-[#d4b978] hover:underline font-medium relative group/link">
+                        <span className="absolute inset-0 bg-[#c9a962]/10 rounded blur-md opacity-0 group-hover/link:opacity-100 transition-all duration-300 -m-1" />
+                        <span className="relative z-10 drop-shadow-[0_0_5px_rgba(201,169,98,0.5)]">Forgot password?</span>
                       </Link>
                     </div>
                     <FormControl>
-                      <PasswordInput placeholder="Enter your password" autoComplete="current-password" className="h-10 lg:h-9 rounded-lg" {...field} />
+                      <PasswordInput 
+                        placeholder="Enter your password" 
+                        autoComplete="current-password" 
+                        className="h-12 rounded-xl bg-white border-0 text-[#3d3229] placeholder:text-[#3d3229]/40 focus:ring-2 focus:ring-[#c9a962] shadow-[0_0_15px_rgba(201,169,98,0.1)] focus:shadow-[0_0_20px_rgba(201,169,98,0.3)] transition-all duration-300" 
+                        {...field} 
+                      />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-red-400 text-[12px]" />
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full h-11 text-sm rounded-lg shadow-sm" disabled={loading}>
-                {loading ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                  <LogIn className="mr-2 h-4 w-4" />
-                )}
-                Sign In
-              </Button>
+              
+              {/* Glowing Sign In Button */}
+              <div className="relative group/btn pt-2">
+                <div className="absolute -inset-1 bg-gradient-to-r from-[#c9a962]/40 via-[#c9a962]/60 to-[#c9a962]/40 rounded-xl blur-lg opacity-0 group-hover/btn:opacity-100 transition-all duration-300" />
+                <div className="absolute -inset-1 bg-[#c9a962]/30 rounded-xl blur-md opacity-0 group-hover/btn:opacity-100 transition-all duration-500" />
+                
+                <Button 
+                  type="submit" 
+                  className="relative w-full h-14 text-[16px] font-semibold rounded-xl bg-[#c9a962] hover:bg-[#d4b978] text-[#3d3229] transition-all duration-300 disabled:opacity-50 shadow-[0_0_20px_rgba(201,169,98,0.3)] hover:shadow-[0_0_40px_rgba(201,169,98,0.6)] border-2 border-transparent hover:border-[#c9a962]/50 overflow-hidden group-active/btn:scale-[0.98]" 
+                  disabled={loading}
+                >
+                  <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700" />
+                  {loading ? (
+                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  ) : (
+                    <ArrowRight className="mr-2 h-5 w-5 drop-shadow-[0_0_3px_rgba(61,50,41,0.5)]" />
+                  )}
+                  <span className="relative z-10 drop-shadow-[0_0_3px_rgba(61,50,41,0.3)]">Sign In</span>
+                </Button>
+              </div>
             </form>
           </Form>
-        </div>
 
-        {/* Footer links */}
-        <div className="px-5 pb-5 lg:px-6 lg:pb-6">
-          <div className="border-t border-border/40 pt-4 text-center">
-            <p className="text-[12px] text-muted-foreground">
+          <div className="mt-8 pt-6 border-t border-[#d4c5b0]/30 relative">
+            <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#c9a962]/30 to-transparent" />
+            <p className="text-[14px] text-[#d4c5b0] text-center">
               New homeowner?{' '}
-              <Link href="/register" className="text-primary hover:underline font-medium">
-                Register here
+              <Link href="/register" className="text-[#c9a962] hover:text-[#d4b978] hover:underline font-semibold relative inline-block group/reg">
+                <span className="absolute inset-0 bg-[#c9a962]/20 rounded blur-lg opacity-0 group-hover/reg:opacity-100 transition-all duration-300 -m-2" />
+                <span className="relative z-10 drop-shadow-[0_0_8px_rgba(201,169,98,0.6)]">Register here</span>
               </Link>
             </p>
           </div>
+
+          {/* Bottom intense glow line */}
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3/4 h-[2px] bg-gradient-to-r from-transparent via-[#c9a962] to-transparent shadow-[0_0_15px_rgba(201,169,98,0.8)]" />
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-4 bg-[#c9a962]/20 blur-xl" />
         </div>
       </div>
     </div>

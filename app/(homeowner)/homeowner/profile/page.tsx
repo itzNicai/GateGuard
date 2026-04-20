@@ -220,7 +220,7 @@ export default function ProfilePage() {
         <div className="rounded-xl bg-card ring-1 ring-foreground/[0.06] shadow-card overflow-hidden">
           {/* Banner */}
           <div className="h-24 lg:h-28 bg-gradient-to-r from-primary to-primary/80 relative overflow-hidden">
-            <Image src="/illustrations/profile.png" alt="" width={160} height={160} className="absolute right-0 -bottom-4 opacity-20 object-contain" />
+            <Image src="/illustrations/logo1.png" alt="" width={160} height={160} className="absolute right-0 -bottom-4 opacity-20 object-contain" />
           </div>
           {/* Avatar + info */}
           <div className="px-4 pb-4 -mt-10 flex flex-col items-center">

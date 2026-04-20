@@ -80,7 +80,6 @@ export default function AdminLayout({
     router.push('/login')
   }
 
-  // Build breadcrumbs from pathname segments
   const segments = pathname.replace('/admin/', '').split('/').filter(Boolean)
   const breadcrumbs = segments.map((seg, i) => {
     const href = '/admin/' + segments.slice(0, i + 1).join('/')
@@ -95,24 +94,29 @@ export default function AdminLayout({
     .slice(0, 2) ?? 'AD'
 
   return (
-    <div className="min-h-screen flex bg-muted/30">
-      {/* Sidebar */}
+    <div className="min-h-screen flex bg-[#3d3229]">
       <aside
         className={cn(
-          'fixed inset-y-0 left-0 z-50 w-60 bg-card flex flex-col border-r border-border/50 transition-transform duration-200',
+          'fixed inset-y-0 left-0 z-50 w-60 bg-[#4a3f35]/95 backdrop-blur-md flex flex-col border-r border-[#d4c5b0]/20 transition-transform duration-200',
           sidebarOpen ? 'translate-x-0' : '-translate-x-full',
           'lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen lg:flex'
         )}
       >
-        {/* Sidebar Header */}
-        <div className="h-13 flex items-center px-4 border-b border-border/50">
-          <Logo />
+        <div className="h-16 flex items-center px-4 border-b border-[#d4c5b0]/20">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-[#d4c5b0]/20 backdrop-blur-md border border-[#e8dcc8]/30 rounded-xl flex items-center justify-center">
+              <Shield className="w-5 h-5 text-[#f5e6d3]" />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-[15px] font-bold text-[#f5e6d3] leading-none tracking-wide">GateGuard</span>
+              <span className="text-[10px] text-[#d4c5b0] leading-tight mt-1 font-medium tracking-wider uppercase">Admin Portal</span>
+            </div>
+          </div>
         </div>
 
-        {/* Nav */}
         <nav className="flex-1 px-3 py-4 space-y-1">
-          <p className="px-3 mb-2 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/70">
-            Main
+          <p className="px-3 mb-3 text-[10px] font-semibold uppercase tracking-widest text-[#d4c5b0]/70">
+            Main Menu
           </p>
           {navItems.map((item) => (
             <Link
@@ -120,10 +124,10 @@ export default function AdminLayout({
               href={item.href}
               onClick={() => setSidebarOpen(false)}
               className={cn(
-                'flex items-center gap-2.5 px-3 py-2 rounded-md text-[13px] font-medium transition-colors',
+                'flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-300',
                 pathname === item.href
-                  ? 'bg-primary text-primary-foreground shadow-sm'
-                  : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                  ? 'bg-gradient-to-r from-[#c9a962] to-[#d4b978] text-[#3d3229] shadow-lg shadow-[#c9a962]/20'
+                  : 'text-[#e8dcc8] hover:bg-[#d4c5b0]/10 hover:text-[#f5e6d3]'
               )}
             >
               <item.icon className="h-4 w-4" />
@@ -132,38 +136,36 @@ export default function AdminLayout({
           ))}
         </nav>
 
-        {/* Sidebar Footer — User info */}
-        <div className="border-t border-border/50 p-3">
+        <div className="border-t border-[#d4c5b0]/20 p-3">
           <DropdownMenu>
-            <DropdownMenuTrigger className="flex items-center gap-2.5 w-full rounded-md px-2 py-2 text-left hover:bg-muted transition-colors">
+            <DropdownMenuTrigger className="flex items-center gap-2.5 w-full rounded-xl px-3 py-2.5 text-left hover:bg-[#d4c5b0]/10 transition-colors border border-transparent hover:border-[#d4c5b0]/20">
               {adminUser?.avatar_url ? (
-                /* eslint-disable-next-line @next/next/no-img-element */
-                <img src={adminUser.avatar_url} alt={adminUser.full_name} className="h-8 w-8 rounded-md object-cover shrink-0" />
+                <img src={adminUser.avatar_url} alt={adminUser.full_name} className="h-9 w-9 rounded-lg object-cover shrink-0 border border-[#d4c5b0]/30" />
               ) : (
-                <div className="h-8 w-8 rounded-md bg-primary/10 flex items-center justify-center text-xs font-bold text-primary shrink-0">
+                <div className="h-9 w-9 rounded-lg bg-gradient-to-br from-[#c9a962] to-[#d4b978] flex items-center justify-center text-xs font-bold text-[#3d3229] shrink-0">
                   {initials}
                 </div>
               )}
               <div className="flex-1 min-w-0">
-                <p className="text-[13px] font-medium truncate">{adminUser?.full_name ?? 'Admin'}</p>
-                <p className="text-[11px] text-muted-foreground truncate">{adminUser?.email ?? ''}</p>
+                <p className="text-[13px] font-medium text-[#f5e6d3] truncate">{adminUser?.full_name ?? 'Admin'}</p>
+                <p className="text-[11px] text-[#d4c5b0] truncate">{adminUser?.email ?? ''}</p>
               </div>
-              <ChevronsUpDown className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+              <ChevronsUpDown className="h-3.5 w-3.5 text-[#d4c5b0] shrink-0" />
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-56">
+            <DropdownMenuContent align="start" className="w-56 bg-[#4a3f35] border-[#d4c5b0]/20 text-[#f5e6d3]">
               <div className="px-2 py-1.5">
-                <p className="text-sm font-medium">{adminUser?.full_name}</p>
-                <p className="text-xs text-muted-foreground">{adminUser?.email}</p>
+                <p className="text-sm font-medium text-[#f5e6d3]">{adminUser?.full_name}</p>
+                <p className="text-xs text-[#d4c5b0]">{adminUser?.email}</p>
               </div>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => router.push('/admin/settings')}>
-                <Settings className="mr-2 h-4 w-4" />
+              <DropdownMenuSeparator className="bg-[#d4c5b0]/20" />
+              <DropdownMenuItem onClick={() => router.push('/admin/settings')} className="text-[#e8dcc8] focus:text-[#f5e6d3] focus:bg-[#d4c5b0]/10">
+                <Settings className="mr-2 h-4 w-4 text-[#c9a962]" />
                 Settings
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
+              <DropdownMenuSeparator className="bg-[#d4c5b0]/20" />
               <DropdownMenuItem
                 onClick={handleLogout}
-                className="text-destructive focus:text-destructive"
+                className="text-red-400 focus:text-red-300 focus:bg-red-500/10"
               >
                 <LogOut className="mr-2 h-4 w-4" />
                 Log out
@@ -173,21 +175,19 @@ export default function AdminLayout({
         </div>
       </aside>
 
-      {/* Mobile overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-40 bg-[#3d3229]/80 backdrop-blur-sm lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
-      {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="h-13 border-b border-border/50 flex items-center gap-3 px-4 bg-card/80 backdrop-blur-sm sticky top-0 z-10">
+        <header className="h-16 border-b border-[#d4c5b0]/20 flex items-center gap-3 px-4 bg-[#4a3f35]/80 backdrop-blur-md sticky top-0 z-10">
           <Button
             variant="ghost"
             size="icon"
-            className="lg:hidden -ml-2 h-8 w-8"
+            className="lg:hidden -ml-2 h-8 w-8 text-[#f5e6d3] hover:bg-[#d4c5b0]/10 hover:text-[#f5e6d3]"
             onClick={() => setSidebarOpen(!sidebarOpen)}
           >
             {sidebarOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
@@ -195,11 +195,11 @@ export default function AdminLayout({
           <nav className="flex items-center gap-1 text-sm">
             {breadcrumbs.map((crumb, i) => (
               <span key={crumb.href} className="flex items-center gap-1">
-                {i > 0 && <ChevronRight className="h-3 w-3 text-muted-foreground" />}
+                {i > 0 && <ChevronRight className="h-3 w-3 text-[#d4c5b0]" />}
                 {i === breadcrumbs.length - 1 ? (
-                  <span className="font-semibold">{crumb.label}</span>
+                  <span className="font-semibold text-[#f5e6d3]">{crumb.label}</span>
                 ) : (
-                  <Link href={crumb.href} className="text-muted-foreground hover:text-foreground transition-colors">
+                  <Link href={crumb.href} className="text-[#d4c5b0] hover:text-[#f5e6d3] transition-colors">
                     {crumb.label}
                   </Link>
                 )}
@@ -207,7 +207,7 @@ export default function AdminLayout({
             ))}
           </nav>
         </header>
-        <main className="flex-1 p-5 pt-6 pb-8 overflow-auto animate-fade-in">{children}</main>
+        <main className="flex-1 p-5 pt-6 pb-8 overflow-auto bg-[#3d3229]/50">{children}</main>
       </div>
     </div>
   )

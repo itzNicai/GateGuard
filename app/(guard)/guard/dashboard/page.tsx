@@ -13,9 +13,9 @@ import { toast } from 'sonner'
 
 const STATUS_AVATARS: Record<string, string> = {
   pending: '/illustrations/notif-at-gate.png',
-  approved: '/illustrations/notif-approved.png',
+  approved: '/illustrations/pfp.png',
   denied: '/illustrations/notif-denied.png',
-  inside: '/illustrations/notif-approved.png',
+  inside: '/illustrations/pfp.png',
   pending_exit: '/illustrations/notif-exited.png',
   exited: '/illustrations/notif-exited.png',
 }
@@ -310,7 +310,7 @@ export default function GuardDashboardPage() {
                 </p>
               </div>
               <Image
-                src="/illustrations/waiting.png"
+                src="/illustrations/logo1.png"
                 alt=""
                 width={130}
                 height={130}
@@ -334,7 +334,7 @@ export default function GuardDashboardPage() {
                 <p className="text-[10px] text-white/70 font-medium uppercase tracking-wider">Approved</p>
                 <p className="text-2xl font-bold mt-1 text-white">{stats.approvedCount}</p>
               </div>
-              <Image src="/illustrations/notif-approved.png" alt="" width={60} height={60} className="absolute -right-1 -bottom-2 opacity-20 object-contain" />
+              <Image src="/illustrations/pfp.png" alt="" width={60} height={60} className="absolute -right-1 -bottom-2 opacity-20 object-contain" />
             </div>
             <div className="rounded-xl bg-gradient-to-br from-muted-foreground/80 to-muted-foreground/60 ring-1 ring-muted-foreground/20 shadow-card p-4 overflow-hidden relative">
               <div className="relative z-10">

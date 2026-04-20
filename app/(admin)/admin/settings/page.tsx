@@ -165,7 +165,7 @@ export default function AdminSettingsPage() {
       <div className="lg:sticky lg:top-20 lg:self-start space-y-4">
         <div className="rounded-xl bg-card ring-1 ring-foreground/[0.06] shadow-card overflow-hidden">
           <div className="h-20 lg:h-24 bg-gradient-to-r from-primary to-primary/80 relative overflow-hidden">
-            <Image src="/illustrations/profile.png" alt="" width={140} height={140} className="absolute right-0 -bottom-4 opacity-20 object-contain" />
+            <Image src="/illustrations/logo1.png" alt="" width={140} height={140} className="absolute right-0 -bottom-4 opacity-20 object-contain" />
           </div>
           <div className="px-4 pb-4 -mt-8 flex flex-col items-center">
             <div className="relative">

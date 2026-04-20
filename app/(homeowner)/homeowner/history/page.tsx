@@ -42,7 +42,7 @@ interface VisitRecord {
 
 const STATUS_AVATARS: Record<string, string> = {
   pending: '/illustrations/notif-at-gate.png',
-  approved: '/illustrations/notif-approved.png',
+  approved: '/illustrations/pfp.png',
   denied: '/illustrations/notif-denied.png',
   exited: '/illustrations/notif-exited.png',
 }

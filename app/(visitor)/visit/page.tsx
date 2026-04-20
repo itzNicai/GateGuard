@@ -147,7 +147,7 @@ export default function VisitorPortalPage() {
           </p>
         </div>
         <Image
-          src="/illustrations/waiting.png"
+          src="/illustrations/logo1.png"
           alt=""
           width={80}
           height={80}
@@ -155,7 +155,6 @@ export default function VisitorPortalPage() {
         />
       </div>
 
-      {/* Form */}
       <div className="rounded-xl bg-card ring-1 ring-foreground/[0.06] shadow-card overflow-hidden">
         {error && (
           <div className="mx-5 mt-5 rounded-lg bg-destructive/5 border border-destructive/20 px-3 py-2.5 flex items-center gap-2">
@@ -167,7 +166,6 @@ export default function VisitorPortalPage() {
         <div className="p-5 lg:p-6">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              {/* Personal info section */}
               <div>
                 <p className="text-[9px] font-semibold text-muted-foreground/60 uppercase tracking-wider mb-3">Personal Information</p>
                 <div className="space-y-3">
@@ -199,7 +197,6 @@ export default function VisitorPortalPage() {
                 </div>
               </div>
 
-              {/* Visit details section */}
               <div>
                 <p className="text-[9px] font-semibold text-muted-foreground/60 uppercase tracking-wider mb-3">Visit Details</p>
                 <div className="space-y-3">
@@ -249,7 +246,6 @@ export default function VisitorPortalPage() {
                 </div>
               </div>
 
-              {/* Proof section */}
               <div>
                 <p className="text-[9px] font-semibold text-muted-foreground/60 uppercase tracking-wider mb-3">Verification</p>
                 <div className="space-y-1.5">
@@ -272,7 +268,6 @@ export default function VisitorPortalPage() {
                 </div>
               </div>
 
-              {/* Submit */}
               <Button type="submit" className="w-full h-11 text-sm rounded-lg shadow-sm" disabled={loading}>
                 {loading ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
