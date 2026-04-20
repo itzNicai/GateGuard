@@ -1,0 +1,14 @@
+-- ============================================================
+-- GateGuard Seed Data
+-- ============================================================
+-- Note: Auth users must be created via Supabase Auth API.
+-- The handle_new_user() trigger will auto-create profiles.
+-- This seed file is for reference / manual testing only.
+--
+-- To create test users, use the Supabase dashboard or API:
+--   1. Admin:     admin@gateguard.local     (role: admin)
+--   2. Guard:     guard@gateguard.local     (role: guard)
+--   3. Homeowner: homeowner@gateguard.local (role: homeowner)
+--
+-- After creating users via Auth, their profiles are auto-created
+-- by the on_auth_user_created trigger with correct roles.

@@ -1,0 +1,229 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --primary: #1B3A5C;
+  --primary-foreground: #ffffff;
+  --secondary: #C8A951;
+  --secondary-foreground: #171717;
+  --accent: #2D8B4E;
+  --accent-foreground: #ffffff;
+  --muted: #f5f5f5;
+  --muted-foreground: #737373;
+  --card: #ffffff;
+  --card-foreground: #171717;
+  --border: #e5e5e5;
+  --input: #e5e5e5;
+  --ring: #1B3A5C;
+  --radius: 0.375rem;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --popover: #ffffff;
+  --popover-foreground: #171717;
+  --chart-1: #1B3A5C;
+  --chart-2: #2D8B4E;
+  --chart-3: #C8A951;
+  --chart-4: #ef4444;
+  --chart-5: #64748b;
+  --sidebar: #f5f5f5;
+  --sidebar-foreground: #171717;
+  --sidebar-primary: #1B3A5C;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #C8A951;
+  --sidebar-accent-foreground: #171717;
+  --sidebar-border: #e5e5e5;
+  --sidebar-ring: #1B3A5C;
+}
+
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --primary: #2a5a8c;
+  --primary-foreground: #ffffff;
+  --secondary: #C8A951;
+  --secondary-foreground: #0a0a0a;
+  --accent: #2D8B4E;
+  --accent-foreground: #ffffff;
+  --muted: #1a1a1a;
+  --muted-foreground: #a3a3a3;
+  --card: #111111;
+  --card-foreground: #ededed;
+  --border: #262626;
+  --input: #262626;
+  --ring: #2a5a8c;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --popover: #111111;
+  --popover-foreground: #ededed;
+  --chart-1: #1B3A5C;
+  --chart-2: #2D8B4E;
+  --chart-3: #C8A951;
+  --chart-4: #ef4444;
+  --chart-5: #64748b;
+  --sidebar: #1a1a1a;
+  --sidebar-foreground: #ededed;
+  --sidebar-primary: #2a5a8c;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #C8A951;
+  --sidebar-accent-foreground: #0a0a0a;
+  --sidebar-border: #262626;
+  --sidebar-ring: #2a5a8c;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --font-sans: var(--font-inter);
+  --radius: 0.375rem;
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+* {
+  border-color: var(--border);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+  html {
+    @apply font-sans;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@layer utilities {
+  .shadow-card {
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.04), 0 1px 2px -1px rgb(0 0 0 / 0.04);
+  }
+  .shadow-card-hover {
+    box-shadow: 0 4px 12px 0 rgb(0 0 0 / 0.06), 0 2px 4px -2px rgb(0 0 0 / 0.04);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in-scale {
+  from { opacity: 0; transform: scale(0.97); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(1); opacity: 0.4; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+
+/* Thin scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(0 0 0 / 0.12);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(0 0 0 / 0.2);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(0 0 0 / 0.12) transparent;
+}
+
+/* Smaller placeholder text on inputs while keeping 16px input text to prevent iOS zoom */
+input::placeholder,
+textarea::placeholder {
+  font-size: 13px;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out both;
+}
+
+.animate-fade-in-scale {
+  animation: fade-in-scale 0.25s ease-out both;
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 2s ease-out infinite;
+}
+
+@keyframes flash-approved {
+  0% { background-color: rgb(45 139 78 / 0.2); box-shadow: 0 0 0 0 rgb(45 139 78 / 0.3); }
+  50% { background-color: rgb(45 139 78 / 0.1); box-shadow: 0 0 20px 4px rgb(45 139 78 / 0.15); }
+  100% { background-color: transparent; box-shadow: none; }
+}
+
+@keyframes flash-denied {
+  0% { background-color: rgb(239 68 68 / 0.15); box-shadow: 0 0 0 0 rgb(239 68 68 / 0.3); }
+  50% { background-color: rgb(239 68 68 / 0.08); box-shadow: 0 0 20px 4px rgb(239 68 68 / 0.12); }
+  100% { background-color: transparent; box-shadow: none; }
+}
+
+.animate-flash-approved {
+  animation: flash-approved 1.5s ease-out;
+}
+
+.animate-flash-denied {
+  animation: flash-denied 1.5s ease-out;
+}
