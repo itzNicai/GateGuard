@@ -10,7 +10,6 @@ import { cn } from '@/lib/utils'
 import {
   LayoutDashboard,
   UserCircle,
-  Clock,
 } from 'lucide-react'
 
 const navItems = [
@@ -32,7 +31,6 @@ export default function GuardLayout({
   const [user, setUser] = useState<UserInfo | null>(null)
   const [userId, setUserId] = useState<string | null>(null)
   const [refreshKey, setRefreshKey] = useState(0)
-  const [onShift, setOnShift] = useState(false)
 
   useEffect(() => {
     async function load() {
@@ -42,27 +40,12 @@ export default function GuardLayout({
       setUserId(authUser.id)
       const { data } = await supabase.from('profiles').select('full_name, avatar_url').eq('id', authUser.id).single()
       if (data) setUser(data as UserInfo)
-
-      const res = await fetch(`/api/guard/shift/current?guard_id=${authUser.id}`)
-      const sd = res.ok ? await res.json() : { shift: null }
-      setOnShift(!!sd.shift)
     }
     load()
   }, [pathname, refreshKey])
 
   const handleProfileChange = useCallback(() => setRefreshKey((k) => k + 1), [])
   useRealtime({ table: 'profiles', event: 'UPDATE', filter: userId ? `id=eq.${userId}` : undefined, onData: handleProfileChange })
-  useRealtime({ table: 'guard_shifts', event: '*', filter: userId ? `guard_id=eq.${userId}` : undefined, onData: handleProfileChange })
-
-  useEffect(() => {
-    if (!onShift) return
-    const handler = (e: BeforeUnloadEvent) => {
-      e.preventDefault()
-      e.returnValue = ''
-    }
-    window.addEventListener('beforeunload', handler)
-    return () => window.removeEventListener('beforeunload', handler)
-  }, [onShift])
 
   const currentPage = navItems.find((item) => pathname === item.href)?.label ?? 'Dashboard'
   const firstName = user?.full_name?.split(' ')[0] ?? ''
@@ -87,28 +70,20 @@ export default function GuardLayout({
               )}
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            {onShift && (
-              <span className="inline-flex items-center gap-1 h-6 px-2 rounded-full bg-accent/10 text-accent text-[10px] font-semibold">
-                <Clock className="h-3 w-3" />
-                On shift
-              </span>
+          <Link href="/guard/profile">
+            {user?.avatar_url ? (
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img
+                src={user.avatar_url}
+                alt={user.full_name}
+                className="h-8 w-8 rounded-full object-cover ring-1 ring-border"
+              />
+            ) : (
+              <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-[11px] font-bold text-primary ring-1 ring-border">
+                {initials}
+              </div>
             )}
-            <Link href="/guard/profile">
-              {user?.avatar_url ? (
-                /* eslint-disable-next-line @next/next/no-img-element */
-                <img
-                  src={user.avatar_url}
-                  alt={user.full_name}
-                  className="h-8 w-8 rounded-full object-cover ring-1 ring-border"
-                />
-              ) : (
-                <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-[11px] font-bold text-primary ring-1 ring-border">
-                  {initials}
-                </div>
-              )}
-            </Link>
-          </div>
+          </Link>
         </div>
       </header>
 
@@ -144,32 +119,24 @@ export default function GuardLayout({
               )
             })}
           </nav>
-          <div className="flex items-center gap-3">
-            {onShift && (
-              <span className="inline-flex items-center gap-1.5 h-7 px-2.5 rounded-full bg-accent/10 text-accent text-[11px] font-semibold">
-                <Clock className="h-3 w-3" />
-                On shift
-              </span>
-            )}
-            <Link href="/guard/profile" className="flex items-center gap-2.5">
-              <div className="text-right">
-                <p className="text-[12px] font-medium">{user?.full_name}</p>
-                <p className="text-[10px] text-muted-foreground">Guard</p>
+          <Link href="/guard/profile" className="flex items-center gap-2.5">
+            <div className="text-right">
+              <p className="text-[12px] font-medium">{user?.full_name}</p>
+              <p className="text-[10px] text-muted-foreground">Guard</p>
+            </div>
+            {user?.avatar_url ? (
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img
+                src={user.avatar_url}
+                alt={user.full_name ?? ''}
+                className="h-8 w-8 rounded-full object-cover ring-1 ring-border"
+              />
+            ) : (
+              <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-[11px] font-bold text-primary ring-1 ring-border">
+                {initials}
               </div>
-              {user?.avatar_url ? (
-                /* eslint-disable-next-line @next/next/no-img-element */
-                <img
-                  src={user.avatar_url}
-                  alt={user.full_name ?? ''}
-                  className="h-8 w-8 rounded-full object-cover ring-1 ring-border"
-                />
-              ) : (
-                <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-[11px] font-bold text-primary ring-1 ring-border">
-                  {initials}
-                </div>
-              )}
-            </Link>
-          </div>
+            )}
+          </Link>
         </div>
       </header>
 

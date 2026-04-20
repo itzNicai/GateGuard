@@ -2,11 +2,10 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notifyHomeowner } from '@/lib/brevo'
 import { visitorExitedEmail } from '@/lib/email-templates'
-import { hasOpenShift } from '@/lib/shifts'
 
 export async function PATCH(request: NextRequest) {
   try {
-    const { visit_log_id, action, guard_id } = await request.json()
+    const { visit_log_id, action } = await request.json()
 
     if (!visit_log_id || !action) {
       return NextResponse.json({ error: 'visit_log_id and action required' }, { status: 400 })
@@ -17,13 +16,6 @@ export async function PATCH(request: NextRequest) {
     }
 
     const supabase = createAdminClient()
-
-    if (guard_id && !(await hasOpenShift(supabase, guard_id))) {
-      return NextResponse.json(
-        { error: 'NOT_ON_SHIFT', message: 'You must clock in before confirming visitors.' },
-        { status: 403 }
-      )
-    }
 
     // Get the visit log with visitor + homeowner info
     const { data: log, error: logError } = await supabase

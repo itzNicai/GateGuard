@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { notifyHomeowner } from '@/lib/brevo'
 import { visitorAtGateEmail } from '@/lib/email-templates'
-import { hasOpenShift } from '@/lib/shifts'
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,13 +13,6 @@ export async function POST(request: NextRequest) {
     }
 
     const supabase = createAdminClient()
-
-    if (!(await hasOpenShift(supabase, guard_id))) {
-      return NextResponse.json(
-        { error: 'NOT_ON_SHIFT', message: 'You must clock in before scanning visitors.' },
-        { status: 403 }
-      )
-    }
 
     // Look up visitor by QR code
     const { data: visitor, error: visitorError } = await supabase

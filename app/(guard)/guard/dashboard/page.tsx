@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import Image from 'next/image'
 import { createClient } from '@/lib/supabase/client'
 import { useRealtime } from '@/hooks/use-realtime'
-import { ScanLine, Loader2, CheckCircle2, XCircle, LogOut, MapPin, User, Car, Eye, LogIn, Clock } from 'lucide-react'
+import { ScanLine, Loader2, CheckCircle2, XCircle, LogOut, MapPin, User, Car, Eye, LogIn } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
@@ -108,8 +108,6 @@ function getDisplayStatus(e: VisitEntry): string {
 export default function GuardDashboardPage() {
   const [guardId, setGuardId] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
-  const [onShift, setOnShift] = useState<boolean | null>(null)
-  const [clockingIn, setClockingIn] = useState(false)
   const [scanning, setScanning] = useState(false)
   const [entries, setEntries] = useState<VisitEntry[]>([])
   const [stats, setStats] = useState<Stats>({ totalToday: 0, pendingCount: 0, approvedCount: 0, exitedCount: 0 })
@@ -126,11 +124,6 @@ export default function GuardDashboardPage() {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) { setLoading(false); return }
       setGuardId(user.id)
-
-      // Check current shift first — gates the rest of the dashboard
-      const shiftRes = await fetch(`/api/guard/shift/current?guard_id=${user.id}`)
-      const shiftData = shiftRes.ok ? await shiftRes.json() : { shift: null }
-      setOnShift(!!shiftData.shift)
 
       // Fetch via API route (uses admin client, bypasses RLS issues with nested joins)
       const res = await fetch(`/api/guard/dashboard?guard_id=${user.id}`)
@@ -195,30 +188,6 @@ export default function GuardDashboardPage() {
 
   useRealtime({ table: 'visit_logs', event: '*', onData: handleRealtimeChange })
   useRealtime({ table: 'visitors', event: 'UPDATE', onData: handleRealtimeChange })
-  useRealtime({ table: 'guard_shifts', event: '*', filter: guardId ? `guard_id=eq.${guardId}` : undefined, onData: handleRealtimeChange })
-
-  async function handleClockIn() {
-    if (!guardId || clockingIn) return
-    setClockingIn(true)
-    try {
-      const res = await fetch('/api/guard/shift/clock-in', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ guard_id: guardId }),
-      })
-      const data = await res.json().catch(() => ({}))
-      if (!res.ok) {
-        toast.error(data.message || data.error || 'Failed to clock in')
-        setClockingIn(false)
-        return
-      }
-      setOnShift(true)
-      toast.success('You are now on shift')
-    } catch {
-      toast.error('Network error — please try again')
-    }
-    setClockingIn(false)
-  }
 
   const handleScan = useCallback(async (qrCode: string) => {
     setScanning(false)
@@ -271,7 +240,7 @@ export default function GuardDashboardPage() {
       const res = await fetch('/api/guard/confirm', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ visit_log_id: entry.id, action, guard_id: guardId }),
+        body: JSON.stringify({ visit_log_id: entry.id, action }),
       })
 
       const data = await res.json().catch(() => ({}))
@@ -321,36 +290,6 @@ export default function GuardDashboardPage() {
           <Skeleton className="h-20 rounded-xl" />
         </div>
         <Skeleton className="h-48 rounded-xl" />
-      </div>
-    )
-  }
-
-  if (onShift === false) {
-    return (
-      <div className="flex flex-col items-center justify-center py-12 lg:py-20">
-        <div className="w-full max-w-sm rounded-2xl bg-card ring-1 ring-foreground/[0.06] shadow-card overflow-hidden">
-          <div className="h-28 bg-gradient-to-r from-primary to-primary/80 relative flex items-center justify-center">
-            <Image src="/illustrations/waiting.png" alt="" width={120} height={120} className="object-contain opacity-90" />
-          </div>
-          <div className="p-5 text-center">
-            <div className="inline-flex items-center justify-center h-10 w-10 rounded-full bg-primary/10 mb-2">
-              <Clock className="h-5 w-5 text-primary" />
-            </div>
-            <h2 className="text-base font-semibold">You&apos;re not on shift</h2>
-            <p className="text-[12px] text-muted-foreground mt-1">
-              Clock in to start your duty. You&apos;ll be able to scan visitors and confirm entries once your shift begins.
-            </p>
-            <Button
-              size="lg"
-              className="w-full h-11 mt-4 text-sm shadow-md"
-              disabled={clockingIn || !guardId}
-              onClick={handleClockIn}
-            >
-              {clockingIn ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <LogIn className="mr-2 h-4 w-4" />}
-              Clock In
-            </Button>
-          </div>
-        </div>
       </div>
     )
   }
