@@ -32,6 +32,7 @@ function StatCard({ title, value, color, href }: { title: string; value: number;
 
 export default function AdminDashboardPage() {
   const [stats, setStats] = useState<Stats | null>(null)
+  const [activeGuard, setActiveGuard] = useState<any>(null)
   const [refreshKey, setRefreshKey] = useState(0)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const router = useRouter()
@@ -56,6 +57,27 @@ export default function AdminDashboardPage() {
         activeGuards: guards.count ?? 0,
         todayVisitors: visitors.count ?? 0,
       })
+      setStats({
+  totalHomeowners: homeowners.count ?? 0,
+  pendingRegistrations: pending.count ?? 0,
+  activeGuards: guards.count ?? 0,
+  todayVisitors: visitors.count ?? 0,
+})
+
+/* 🔥 ADD THIS BELOW setStats */
+const { data } = await supabase
+  .from('guard_shifts')
+  .select(`
+    guard_id,
+    login_time,
+    duty_start,
+    duty_end,
+    profiles(full_name)
+  `)
+  .eq('status', 'Active')
+  .single()
+
+setActiveGuard(data)
     }
     loadStats()
   }, [refreshKey])
@@ -131,7 +153,25 @@ export default function AdminDashboardPage() {
           <h1 className="text-sm lg:text-base font-semibold">Dashboard</h1>
           <p className="text-[#3d3229]/70 text-[11px] mt-0.5">Overview of Sabang Dexterville Subdivision</p>
         </div>
-        
+        {activeGuard && (
+  <div className="rounded-xl bg-[#4a3f35]/80 border border-[#c9a962]/30 p-4 shadow-xl">
+    <p className="text-[12px] text-[#c9a962] font-semibold uppercase">
+      Current Guard on Duty
+    </p>
+
+    <p className="text-[#f5e6d3] text-sm mt-1 font-semibold">
+      {activeGuard.profiles?.full_name}
+    </p>
+
+    <p className="text-[12px] text-[#d4c5b0]">
+      Login: {new Date(activeGuard.login_time).toLocaleTimeString()}
+    </p>
+
+    <p className="text-[12px] text-[#d4c5b0]">
+      Duty: {activeGuard.duty_start} - {activeGuard.duty_end}
+    </p>
+  </div>
+)}
         {!stats ? (
           <div className="grid grid-cols-2 gap-3">
             {Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-[100px] rounded-xl bg-[#4a3f35]/50" />)}

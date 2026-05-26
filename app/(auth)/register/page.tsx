@@ -26,12 +26,22 @@ function generateId(): string {
 
 export default function RegisterPage() {
   const router = useRouter()
+  const STORAGE_KEY = 'homeowner_registration_draft'
+  const FILES_KEY = 'homeowner_registration_files'
   const [blocksLots, setBlocksLots] = useState<BlockLot[]>([])
   const [proofFiles, setProofFiles] = useState<File[]>([])
+  useEffect(() => {
+  localStorage.setItem(
+    'homeowner_registration_files',
+    JSON.stringify(proofFiles.map(file => file.name))
+  )
+}, [proofFiles])
   const [proofError, setProofError] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
+
+  const [draftLoaded, setDraftLoaded] = useState(false)
 
   const form = useForm<RegisterValues>({
     resolver: zodResolver(registerSchema),
@@ -40,6 +50,14 @@ export default function RegisterPage() {
       confirmPassword: '', block: '', lot: '',
     },
   })
+
+  useEffect(() => {
+  const subscription = form.watch((value) => {
+    localStorage.setItem('homeowner_registration_draft', JSON.stringify(value))
+  })
+
+  return () => subscription.unsubscribe()
+}, [form])
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const selectedBlock = form.watch('block')
@@ -50,6 +68,43 @@ export default function RegisterPage() {
       .then((data) => setBlocksLots(data))
       .catch(() => {})
   }, [])
+
+  useEffect(() => {
+  const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+    e.preventDefault()
+    e.returnValue = ''
+  }
+
+  window.addEventListener('beforeunload', handleBeforeUnload)
+
+  return () => {
+    window.removeEventListener('beforeunload', handleBeforeUnload)
+  }
+}, [])
+
+  useEffect(() => {
+  const saved = localStorage.getItem(STORAGE_KEY)
+
+  if (saved) {
+    form.reset(JSON.parse(saved))
+    setDraftLoaded(true)
+  }
+}, [])
+
+{draftLoaded && (
+  <p className="text-xs text-green-500 mb-2">
+    Draft restored
+  </p>
+)}
+
+useEffect(() => {
+  if (proofFiles.length > 0) {
+    localStorage.setItem(
+      FILES_KEY,
+      JSON.stringify(proofFiles.map(f => f.name))
+    )
+  }
+}, [proofFiles])
 
   const blocks = [...new Set(blocksLots.map((bl) => bl.block))].sort(
     (a, b) => parseInt(a.replace('Block ', '')) - parseInt(b.replace('Block ', ''))
@@ -115,6 +170,9 @@ export default function RegisterPage() {
 
     setSuccess(true)
     setLoading(false)
+
+    localStorage.removeItem('homeowner_registration_draft')
+localStorage.removeItem('homeowner_registration_files')
   }
 
   if (success) {

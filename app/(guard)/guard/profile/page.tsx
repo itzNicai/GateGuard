@@ -191,9 +191,23 @@ export default function GuardProfilePage() {
 
   async function handleLogout() {
     const supabase = createClient()
-    await supabase.auth.signOut()
-    router.push('/login')
+    const { data: { user } } = await supabase.auth.getUser()
+
+  if (user) {
+    await supabase
+      .from('guard_shifts')
+      .update({
+        logout_time: new Date().toISOString(),
+        status: 'Completed'
+      })
+      .eq('guard_id', user.id)
+      .eq('status', 'Active')
   }
+
+  await supabase.auth.signOut()
+  router.push('/login')
+}
+
 
   if (loading) return <Skeleton className="h-64 rounded-xl" />
   if (!profile) return null

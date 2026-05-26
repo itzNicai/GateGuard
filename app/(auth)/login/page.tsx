@@ -82,6 +82,16 @@ function LoginForm() {
       return
     }
 
+    if (profile.role === 'guard') {
+  await supabase
+    .from('guard_shifts')
+    .insert({
+      guard_id: user.id,
+      login_time: new Date().toISOString(),
+      status: 'Active',
+    })
+}
+
     if (profile.role === 'homeowner' && !profile.email_confirmed) {
       setError(STATUS_MESSAGES.email_not_confirmed.text)
       await supabase.auth.signOut()
@@ -118,7 +128,7 @@ function LoginForm() {
 
       <div className="flex items-start justify-between mb-8 relative">
         <div>
-          <h1 className="text-[28px] font-bold text-[#f5e6d3] mb-2 drop-shadow-[0_0_10px_rgba(201,169,98,0.3)]">Welcome Back</h1>
+          <h1 className="text-[28px] font-bold text-[#f5e6d3] mb-2 drop-shadow-[0_0_10px_rgba(201,169,98,0.3)]">Welcome</h1>
           <p className="text-[15px] text-[#d4c5b0]">
             Sign in to your GateGuard account.
           </p>

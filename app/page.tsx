@@ -33,21 +33,7 @@ export default function LandingPage() {
           </Link>
 
           <div className="hidden md:flex items-center gap-3">
-            <Link 
-              href="/login" 
-              className="px-5 py-2.5 text-[14px] text-[#e8dcc8] hover:text-[#f5e6d3] transition-colors rounded-full border border-[#d4c5b0]/30 hover:border-[#e8dcc8]/50 hover:bg-[#d4c5b0]/10"
-            >
-              Sign In
-            </Link>
-            <Link 
-              href="/visit" 
-              className="group relative px-6 py-3 bg-gradient-to-r from-[#c9a962] to-[#d4b978] text-[#3d3229] text-[14px] font-bold rounded-full hover:shadow-lg hover:shadow-[#c9a962]/30 transition-all duration-300 flex items-center gap-2 overflow-hidden"
-            >
-              <span className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></span>
-              <QrCode className="w-4 h-4 relative z-10" />
-              <span className="relative z-10">I&apos;m Visiting</span>
-            </Link>
-          </div>
+</div>
 
           <button 
             className="md:hidden p-2.5 text-[#f5e6d3] hover:bg-[#d4c5b0]/20 rounded-xl border border-[#d4c5b0]/30"
@@ -58,23 +44,9 @@ export default function LandingPage() {
         </div>
 
         {isMenuOpen && (
-          <div className="md:hidden bg-[#4a3f35]/95 backdrop-blur-md border-t border-[#d4c5b0]/20 px-6 py-6 space-y-3">
-            <Link 
-              href="/login" 
-              className="block py-3 text-[14px] text-[#e8dcc8] hover:text-[#f5e6d3] text-center rounded-xl border border-[#d4c5b0]/30"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Sign In
-            </Link>
-            <Link 
-              href="/visit" 
-              className="block py-3.5 bg-gradient-to-r from-[#c9a962] to-[#d4b978] text-[#3d3229] text-[14px] font-bold rounded-xl text-center"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Get Visitor QR Code
-            </Link>
-          </div>
-        )}
+  <div className="md:hidden bg-[#4a3f35]/95 backdrop-blur-md border-t border-[#d4c5b0]/20 px-6 py-6">
+  </div>
+)}
       </nav>
 
       <section className="relative z-10 max-w-4xl mx-auto px-6 pt-24 pb-20 text-center">
@@ -99,7 +71,7 @@ export default function LandingPage() {
             className="group relative inline-flex items-center justify-center gap-3 px-10 py-4 bg-gradient-to-r from-[#c9a962] via-[#d4b978] to-[#c9a962] bg-[length:200%_100%] hover:bg-[position:100%_0] text-[#3d3229] rounded-full font-bold text-[16px] transition-all duration-500 shadow-xl shadow-[#c9a962]/20 hover:shadow-[#c9a962]/40 overflow-hidden"
           >
             <QrCode className="w-5 h-5" />
-            Get Visitor QR Code
+            I'm Visiting
             <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
           </Link>
           <Link 
@@ -107,7 +79,7 @@ export default function LandingPage() {
             className="group inline-flex items-center justify-center gap-3 px-10 py-4 bg-transparent text-[#f5e6d3] border-2 border-[#d4c5b0]/50 rounded-full font-medium text-[16px] hover:bg-[#d4c5b0]/10 hover:border-[#e8dcc8] transition-all duration-300"
           >
             <LogIn className="w-5 h-5 group-hover:rotate-12 transition-transform" />
-            Resident Sign In
+            Sign In
           </Link>
         </div>
       </section>
@@ -155,37 +127,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="relative z-10 py-24">
-        <div className="max-w-3xl mx-auto px-6 text-center">
-          <div className="relative bg-[#d4c5b0]/10 backdrop-blur-md border border-[#e8dcc8]/20 rounded-[2.5rem] p-12 md:p-16 overflow-hidden">
-            <div className="absolute top-0 left-0 w-32 h-32 bg-[#c9a962]/10 rounded-full blur-3xl"></div>
-            <div className="absolute bottom-0 right-0 w-40 h-40 bg-[#d4b978]/10 rounded-full blur-3xl"></div>
-            
-            <h2 className="text-[32px] md:text-[44px] font-light text-[#f5e6d3] mb-6 font-serif relative z-10">
-              Ready to <span className="italic text-[#c9a962]">Visit?</span>
-            </h2>
-            <p className="text-[17px] text-[#d4c5b0] mb-10 leading-relaxed font-light relative z-10">
-              Get your visitor QR code in under a minute. No account required for single visits.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center relative z-10">
-              <Link 
-                href="/visit" 
-                className="group inline-flex items-center justify-center gap-3 px-10 py-4 bg-gradient-to-r from-[#c9a962] via-[#d4b978] to-[#c9a962] bg-[length:200%_100%] hover:bg-[position:100%_0] text-[#3d3229] rounded-full font-bold text-[16px] transition-all duration-500 shadow-xl shadow-[#c9a962]/30 hover:shadow-[#c9a962]/50"
-              >
-                <QrCode className="w-5 h-5" />
-                Get QR Code Now
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <Link 
-                href="/register" 
-                className="inline-flex items-center justify-center gap-3 px-10 py-4 bg-transparent text-[#f5e6d3] border-2 border-[#d4c5b0]/50 rounded-full font-medium text-[16px] hover:bg-[#d4c5b0]/10 hover:border-[#e8dcc8] transition-all duration-300"
-              >
-                Register as Resident
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      
       <footer className="relative z-10 border-t border-[#d4c5b0]/20 bg-[#3d3229]/90 backdrop-blur-md">
         <div className="max-w-6xl mx-auto px-6 py-10 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-3">

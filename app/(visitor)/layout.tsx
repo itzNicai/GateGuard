@@ -34,22 +34,6 @@ export default function VisitorLayout({
               <p className="text-[10px] text-white/60 uppercase tracking-wider">Sabang Dexterville</p>
             </div>
           </Link>
-          
-          <div className="flex items-center gap-3">
-            <Link
-              href="/login"
-              className="text-[12px] font-medium px-4 py-2 rounded-full border border-white/30 text-white/80 hover:bg-white/10 hover:text-white transition-all duration-200"
-            >
-              Sign In
-            </Link>
-            <Link
-              href="/visitor"
-              className="flex items-center gap-2 text-[12px] font-medium px-4 py-2 rounded-full bg-[#c9a96e] text-[#3a3228] hover:bg-[#d4b87a] transition-all duration-200"
-            >
-              <QrCode className="w-3.5 h-3.5" />
-              I'm Visiting
-            </Link>
-          </div>
         </div>
       </header>
 
